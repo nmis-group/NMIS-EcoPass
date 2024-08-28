@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "NMIS_Ecopass"
+version = "0.1.0"
+dependencies = ["pydantic >=2.0"]
+
+description = "A package for creating and managing digital product passport metadata"
+authors = [
+    { name = "Syed Awais Hassan Munawar", email = "syed.munawar@strath.ac.uk" },
+]
+readme = "README.md"
+license = { file = "LICENSE" }
+requires-python = ">=3.7"
+keywords = ["metadata", "digital passport", "pydantic", "validation"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+Homepage = "https://github.com/nmis-group/NMIS_Ecopass"
+Documentation = "https://github.com/nmis-group/NMIS_Ecopass#readme"
+Source = "https://github.com/nmis-group/NMIS_Ecopass"
+Tracker = "https://github.com/nmis-group/NMIS_Ecopass/issues"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.2.5",
+    "flake8>=3.8.4",
+    "black>=22.3.0",
+]
