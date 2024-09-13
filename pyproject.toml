@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "NMIS_Ecopass"
-version = "0.1.0"
+version = "0.1.2"
 dependencies = ["pydantic >=2.0"]
 
 description = "A package for creating and managing digital product passport metadata"
@@ -14,7 +14,7 @@ authors = [
 readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.7"
-keywords = ["metadata", "digital passport", "pydantic", "validation"]
+keywords = ["metadata", "digital product passport", "pydantic", "validation"]
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",

@@ -9,7 +9,7 @@ class ProductStatus(str, Enum):
     REMANUFACTURED = "remanufactured"
     RECYCLED = "recycled"
 
-#TODO: Need to add warranty, lifeExpectency of product, gross volume and other parameters
+
 class ProductIdentifier(BaseModel):
     model_config = ConfigDict(
         extra='allow',
@@ -35,3 +35,5 @@ class ProductIdentifier(BaseModel):
         description="The current status of the product, e.g., original, maintained, repaired, remanufactured or recycled"
     )
 
+
+#TODO: Need to add warranty, lifeExpectency of product, gross volume and other parameters

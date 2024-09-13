@@ -14,8 +14,8 @@ setup(
             'black>=22.3.0'
         ]
     },
-    description='A package for creating and managing digital product passport metadata',
-    author='Your Name',
+    description='A package for creating and managing digital product passports',
+    author='Syed Awais Hassan Munawar',
     author_email='syed.munawar@strath.ac.uk',
     url='https://github.com/yourusername/NMIS_Ecopass',
     classifiers=[

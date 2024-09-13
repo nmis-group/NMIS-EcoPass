@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, HttpUrl, field_validator, ConfigDict, EmailStr
+from pydantic import BaseModel, Field, HttpUrl, RootModel, ConfigDict, EmailStr
 from datetime import datetime
 from typing import Optional, List, Annotated
 from enum import Enum
@@ -47,7 +47,7 @@ class DismantlingAndRemovalDocumentation(BaseModel):
 
 
 class SetOfDocumentation(BaseModel):
-    __root__: List[DismantlingAndRemovalDocumentation] = Field(
+    RootModel: List[DismantlingAndRemovalDocumentation] = Field(
         ...,
         description="A set of required documentation to support End of life actions")
 
@@ -87,7 +87,7 @@ class RecycledContent(BaseModel):
     postConsumerShare: PostConsumerWasteRecycled = Field(..., description="Post-consumer waste share")
 
 class RecycledContentSet(BaseModel):
-    __root__: List[RecycledContent] = Field(..., uniqueItems=True)
+    RootModel: List[RecycledContent] = Field(..., uniqueItems=True)
 
 
 class EndOfLifeInformationEntity(BaseModel):
