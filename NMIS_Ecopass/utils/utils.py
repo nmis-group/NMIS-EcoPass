@@ -2,7 +2,7 @@ from typing import Dict, Any, Optional
 from uuid import uuid4, UUID
 from datetime import datetime
 from pydantic import ValidationError, HttpUrl
-from .models import Metadata, StatusEnum
+from ..models import Metadata, StatusEnum
 
 def generate_uuid() -> UUID:
     """Generate a new UUID4 for passport_identifier."""
