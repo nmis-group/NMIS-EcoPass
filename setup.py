@@ -6,6 +6,7 @@ setup(
     packages=find_packages(),
     install_requires=[
         'pydantic>=1.7',
+        'pydantic[email]'
     ],
     extras_require={
         'dev': [

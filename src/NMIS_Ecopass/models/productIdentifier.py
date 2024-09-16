@@ -31,7 +31,7 @@ class ProductIdentifier(BaseModel):
         description="Unique identifier assigned to the product"
     )
     productStatus: ProductStatus = Field(
-        ..., 
+        default=None,
         description="The current status of the product, e.g., original, maintained, repaired, remanufactured or recycled"
     )
 

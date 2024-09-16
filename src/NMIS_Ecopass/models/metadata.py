@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, HttpUrl, field_validator, ConfigDict
+from pydantic import BaseModel, Field, HttpUrl,ConfigDict
 from datetime import datetime
 from typing import Optional
 from enum import Enum
@@ -38,7 +38,7 @@ class Metadata(BaseModel):
         description="URL back to EU Registry."
     )
     economic_operator_id: Optional[str] = Field(
-        ..., 
+        default=None,
         description="The identifier for the economic operator, typically a unique company ID, e.g., tax code"
     )
     last_modification: Optional[datetime] = Field(
@@ -50,7 +50,7 @@ class Metadata(BaseModel):
         description="Optional reference to the predecessor version of the DPP, if applicable."
     )
     issue_date: Optional[datetime] = Field(
-        ..., 
+        default=None,
         description="The date when the DPP was issued."
     )
     version: Optional[str] = Field(
@@ -58,11 +58,11 @@ class Metadata(BaseModel):
         description="This is for internal version of the DPP."
     )
     passport_identifier: Optional[UUID] = Field(
-        ..., 
+        default=None,
         description="A unique identifier for the digital product passport, uuid4."
     )
     status: StatusEnum = Field(
-        ..., 
+        default=None,
         description="The current status of the metadata, e.g., draft, active, inactive, expired."
     )
     expiration_date: Optional[datetime] = Field(
