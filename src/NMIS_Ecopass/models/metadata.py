@@ -37,7 +37,7 @@ class Metadata(BaseModel):
         default=None, 
         description="URL back to EU Registry."
     )
-    economic_operator_id: str = Field(
+    economic_operator_id: Optional[str] = Field(
         ..., 
         description="The identifier for the economic operator, typically a unique company ID, e.g., tax code"
     )
@@ -49,7 +49,7 @@ class Metadata(BaseModel):
         default=None, 
         description="Optional reference to the predecessor version of the DPP, if applicable."
     )
-    issue_date: datetime = Field(
+    issue_date: Optional[datetime] = Field(
         ..., 
         description="The date when the DPP was issued."
     )
@@ -57,7 +57,7 @@ class Metadata(BaseModel):
         default=None, 
         description="This is for internal version of the DPP."
     )
-    passport_identifier: UUID = Field(
+    passport_identifier: Optional[UUID] = Field(
         ..., 
         description="A unique identifier for the digital product passport, uuid4."
     )
@@ -69,33 +69,3 @@ class Metadata(BaseModel):
         default=None, 
         description="The date when the DPP will expire, usually required till end of product life - if applicable."
     )
-
-    @field_validator('economic_operator_id')
-    def validate_economic_operator_id(cls, value):
-        if not value.isalnum():
-            raise ValueError("Economic Operator ID must be alphanumeric.")
-        return value
-
-    @field_validator('last_modification', 'expiration_date')
-    def validate_future_dates(cls, value, info):
-        if value and value < datetime.now():
-            raise ValueError(f"{info.field_name.replace('_', ' ').capitalize()} cannot be in the past.")
-        return value
-
-    @field_validator('predecessor')
-    def validate_predecessor(cls, value):
-        if value and not value.isalnum():
-            raise ValueError("Predecessor reference must be alphanumeric.")
-        return value
-
-    @field_validator('version')
-    def validate_version(cls, value):
-        if value and not value.count('.') == 2:
-            raise ValueError("Version must follow semantic versioning (e.g., '1.0.0').")
-        return value
-
-    @field_validator('issue_date')
-    def validate_issue_date(cls, value):
-        if value > datetime.now():
-            raise ValueError("Issue date cannot be in the future.")
-        return value
