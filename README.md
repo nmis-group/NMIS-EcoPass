@@ -17,13 +17,17 @@
 2. [Quick Start Guide](#quick-start-guide)
 3. [Creating a Digital Product Passport (DPP)](#creating-a-digital-product-passport-dpp)
     - [Step 1: Import Models](#step-1-import-models)
-    - [Step 2: Create a Metadata Instance](#step-2-create-a-metadata-instance)
-    - [Step 3: Create a Circularity Instance](#step-3-create-a-circularity-instance)
-    - [Step 4: Create the DPP Instance](#step-4-create-the-dpp-instance)
+    - [Step 2: Create an Instance of DPP and Its Components](#step-2-create-an-instance-of-dpp-and-its-components)
 4. [Full Example](#full-example)
 5. [Model Details](#model-details)
+    - [Metadata](#metadata)
+    - [Product Identifier](#product-identifier)
+    - [Circularity](#circularity)
+    - [Carbon Footprint](#carbon-footprint)
 6. [Contributing](#contributing)
 7. [License](#license)
+
+
 
 ## Installation
 
@@ -33,7 +37,6 @@ Install the package using pip:
 pip install NMIS_Ecopass
 ```
 
-
 ## **Quick Start Guide**
 
 This guide will show you how to create a Digital Product Passport (DPP) using the models provided in the `NMIS_Ecopass`.
@@ -42,119 +45,123 @@ This guide will show you how to create a Digital Product Passport (DPP) using th
 
 #### **Step 1: Import Models**
 
-First, import the necessary classes from `DPP_framework`:
+First, import the necessary classes from `NMIS_Ecopass`:
 
 ```python
-from dpp_framework import DigitalProductPassport, Metadata, Circularity, ProductIdentifier, CarbonFootprint
+from NMIS_Ecopass import DigitalProductPassport as DPP, Metadata, Circularity, ProductIdentifier, CarbonFootprint
 from datetime import datetime
 ```
 
-#### **Step 2: Create a Metadata Instance**
+#### **Step 2: Create an Instance of DPP and Its Components**
 
-The `Metadata` model is a key component of the DPP. You can initialize it with required and optional fields:
+You can start by creating an instance of `DPP` and then initialize its components (`Metadata`, `Circularity`, `ProductIdentifier`, `CarbonFootprint`) as follows:
 
 ```python
-metadata_instance = Metadata(
-    backup_reference="https://example.com/backup", # Optional - Any Third Party DPP platform as backup
-    registration_identifier="https://example.com/registration/12345", # Unique DPP identifier
-    economic_operator_id="ECO-987654321", #Company unique alphanumeric code
-    last_modification=datetime.utcnow(), # Optional Data of DPP modification
-    predecessor="https://example.com/registration/12344", # Optional - any predecessor DPP, eg. subassembly from supplier
-    issue_date=datetime(2024, 1, 15, 9, 0, 0), #DPP issue date
-    version="1.2.3", #DPP version not the product
-    passport_identifier="123e4567-e89b-12d3-a456-426614174000", #Utilise UUID package to create identifier for each product passport
-    status="active", #Enum - draft, active, inactive, expired
-    expiration_date=datetime(2025, 1, 15, 9, 0, 0) #How long will this DPP will be valid
-)
+# Create an empty DPP instance
+DPP_instance = DPP()
+
+# Initialize components
+DPP_instance.metadata = Metadata()
+DPP_instance.circularity = Circularity()
+DPP_instance.productIdentifier = ProductIdentifier()
+DPP_instance.carbonFootprint = CarbonFootprint()
 ```
 
-#### **Step 3: Create a Circularity Instance**
-
-The `Circularity` model contains information about the product's lifecycle:
+Now, you can add data to each component:
 
 ```python
-circularity_instance = Circularity(
-    renewable_content=25.0,
-    # Other circularity fields...
-)
+# Add metadata information
+DPP_instance.metadata.economic_operator_id = "www.nmis.scot"
+DPP_instance.metadata.issue_date = datetime.now()
+DPP_instance.metadata.passport_identifier = "123e4567-e89b-12d3-a456-426614174000"
+DPP_instance.metadata.status = "draft"
+
+# Add circularity information
+DPP_instance.circularity.renewable_content = 30.0
+# Additional fields can be added similarly
+
+# Add product identifier information (Example fields, replace with actual)
+DPP_instance.productIdentifier.batchID = "BCH-20240913-001"
+DPP_instance.productIdentifier.serialID = "SN-AB123456789"
+
+# Add carbon footprint information (Example fields, replace with actual)
+DPP_instance.carbonFootprint.productCarbonFootprint = 100.0
 ```
 
-#### **Step 4: Create the DPP Instance**
+You can now use `DPP_instance` to access and modify data for your Digital Product Passport.
 
-Finally, create a `DigitalProductPassport` instance and assign the models you've created:
+### **Full Example**
 
-```python
-dpp_instance = DigitalProductPassport(
-    metadata=metadata_instance,
-    circularity=circularity_instance
-    # Add other components like ProductIdentifier, CarbonFootprint as needed
-)
-```
-
-You can now use `dpp_instance` to access the data in your DPP.
-
-## **Full Example**
-
-Here’s a full example that demonstrates creating a `DigitalProductPassport`:
+Here’s a full example that demonstrates creating and adding data to a `DigitalProductPassport`:
 
 ```python
-from dpp_framework import DigitalProductPassport, Metadata, Circularity, ProductIdentifier, CarbonFootprint
+from NMIS_Ecopass import DigitalProductPassport as DPP, Metadata, Circularity, ProductIdentifier, CarbonFootprint
 from datetime import datetime
-from uuid import UUID
 
-# Create Metadata instance
-metadata_instance = Metadata(
-    backup_reference="https://example.com/backup",
-    registration_identifier="https://example.com/registration/12345",
-    economic_operator_id="ECO-987654321",
-    last_modification=datetime.utcnow(),
-    predecessor="https://example.com/registration/12344",
-    issue_date=datetime(2024, 1, 15, 9, 0, 0),
-    version="1.2.3",
-    passport_identifier=UUID("123e4567-e89b-12d3-a456-426614174000"),
-    status="active",
-    expiration_date=datetime(2025, 1, 15, 9, 0, 0)
-)
+# Create an empty DPP instance
+DPP_instance = DPP()
 
-# Create Circularity instance
-circularity_instance = Circularity(
-    renewable_content=25.0,
-    # Additional circularity fields can be set here
-)
+# Create and assign metadata
+DPP_instance.metadata = Metadata()
+DPP_instance.metadata.economic_operator_id = "www.nmis.scot"
+DPP_instance.metadata.issue_date = datetime.now()
+DPP_instance.metadata.passport_identifier = "123e4567-e89b-12d3-a456-426614174000"
+DPP_instance.metadata.status = "draft"
 
-# Create the DPP instance
-dpp_instance = DigitalProductPassport(
-    metadata=metadata_instance,
-    circularity=circularity_instance
-    # Add other components (e.g., ProductIdentifier, CarbonFootprint) if needed
-)
+# Create and assign circularity
+DPP_instance.circularity = Circularity()
+DPP_instance.circularity.renewable_content = 25.0
+# Additional circularity fields...
+
+# Create and assign product identifier
+DPP_instance.productIdentifier = ProductIdentifier()
+DPP_instance.productIdentifier.batchID = "BCH-20240913-001"
+DPP_instance.productIdentifier.serialID = "SN-AB123456789"
+
+# Create and assign carbon footprint
+DPP_instance.carbonFootprint = CarbonFootprint()
+DPP_instance.carbonFootprint.productCarbonFootprint = 100.0
+# Additional carbon footprint fields...
 
 # Access and modify fields
-print(dpp_instance.metadata.economic_operator_id)
-dpp_instance.metadata.version = "2.0.0"
+print(DPP_instance.metadata.economic_operator_id)
+DPP_instance.metadata.version = "2.0.0"
 ```
 
-## **Model Details**
+### **Model Details**
 
-### **Metadata**
-- **`backup_reference`**: URL to a backup version of the DPP.
-- **`registration_identifier`**: URL to the EU Registry.
+#### **Metadata**
+- **`backup_reference`**: Optional URL to a backup version of the DPP.
+- **`registration_identifier`**: URL linking to the official registration of the DPP.
 - **`economic_operator_id`**: Identifier for the economic operator (e.g., tax code).
 - **`last_modification`**: Timestamp of the last modification.
-- **`predecessor`**: Reference to the previous version of the DPP.
+- **`predecessor`**: Optional reference to the previous version of the DPP.
 - **`issue_date`**: Date when the DPP was issued.
-- **`version`**: Internal version of the DPP.
-- **`passport_identifier`**: Unique UUID4 for the passport.
-- **`status`**: Status of the metadata (e.g., draft, active).
-- **`expiration_date`**: Expiration date of the DPP.
+- **`version`**: Internal version number for the DPP.
+- **`passport_identifier`**: Unique UUID4 identifier for the product passport.
+- **`status`**: Current status of the metadata (e.g., draft, active, inactive, expired).
+- **`expiration_date`**: Optional date when the DPP will expire.
 
-### **Circularity**
-- **`renewable_content`**: The percentage of renewable content in the product.
-- **Additional Fields**: More fields can be added as per the circularity model's definition.
+#### **Product Identifier**
+- **`batchID`**: Unique batch identifier for the product.
+- **`serialID`**: Unique serial identifier for the product.
+- **`productStatus`**: Status of the product (e.g., original, refurbished).
+
+#### **Circularity**
+- **`dismantlingAndRemovalInformation`**: List of documents related to dismantling and removal of the product, including document type, MIME type, and resource path.
+- **`recycledContent`**: List containing information on pre-consumer and post-consumer recycled material shares, type of recycled material, and associated URLs.
+- **`endOfLifeInformation`**: URLs and information about waste prevention, separate collection, and collection points for the product at the end of its life cycle.
+- **`supplierInformation`**: Information about suppliers, including name, address, email, and website.
+
+#### **Carbon Footprint**
+- **`carbonFootprintPerLifecycleStage`**: List of lifecycle stages with associated carbon footprints (e.g., rawMaterial, production).
+- **`carbonFootprintStudy`**: URL linking to the study or resource providing carbon footprint details.
+- **`productCarbonFootprint`**: Total carbon footprint value of the product.
+- **`carbonFootprintPerformanceClass`**: Classification label for the product's carbon footprint performance (e.g., "Carbon Trust label").
 
 ## **Contributing**
 
-If you want to contribute to the `DPP_framework`, please fork the repository and submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
+If you want to contribute to the `NMIS_Ecopass`, please fork the repository and submit a pull request. For major changes, please open an issue first to discuss what you would like to change.
 
 ## **License**
 

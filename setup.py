@@ -2,8 +2,9 @@ from setuptools import setup, find_packages
 
 setup(
     name='NMIS_Ecopass', 
-    version='0.1.5',
+    version='0.1.6',
     packages=find_packages(),
+    package_data={'dpp_framework': ['py.typed']},
     install_requires=[
         'pydantic>=1.7',
         'pydantic[email]'

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "NMIS_Ecopass"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = ["pydantic >=2.0", "pydantic[email] >=2.0"]
 
 description = "A package for creating and managing digital product passport metadata"
@@ -32,4 +32,17 @@ dev = [
     "pytest>=6.2.5",
     "flake8>=3.8.4",
     "black>=22.3.0",
+    "mypy"
+]
+
+[tool.hatch.build.targets.wheel]
+# Include the 'py.typed' file in your package
+include = [
+    "NMIS_Ecopass/py.typed"
+]
+
+# If you have additional package files to include, you can add them here
+[tool.hatch.build.targets.sdist]
+include = [
+    "NMIS_Ecopass/py.typed"
 ]
