@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='NMIS_Ecopass',  # This should be unique across PyPI
-    version='0.1.1',
+    name='NMIS_Ecopass', 
+    version='0.1.5',
     packages=find_packages(),
     install_requires=[
         'pydantic>=1.7',
