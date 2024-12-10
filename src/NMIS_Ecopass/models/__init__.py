@@ -7,7 +7,7 @@ from .carbonFootprint import CarbonFootprint
 __all__ = [
     "Metadata",
     "Circularity",
-    "ProductIdentifer",
+    "ProductIdentifier",
     "DPP",
     "CarbonFootprint"
     

@@ -1,48 +1,36 @@
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[project]
+[tool.poetry]
 name = "NMIS_Ecopass"
-version = "0.1.7"
-dependencies = ["pydantic >=2.0", "pydantic[email] >=2.0"]
-
+version = "0.1.13"
 description = "A package for creating and managing digital product passport metadata"
-authors = [
-    { name = "Syed Awais Hassan Munawar", email = "syed.munawar@strath.ac.uk" },
-]
+authors = ["Syed Awais Hassan Munawar <syed.munawar@strath.ac.uk>"]
 readme = "README.md"
-license = { file = "LICENSE" }
-requires-python = ">=3.7"
-keywords = ["metadata", "digital product passport", "pydantic", "validation"]
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-]
+packages = [{include = "NMIS_Ecopass", from = "src"}]
+license = "MIT"
 
-[project.urls]
-Homepage = "https://github.com/nmis-group/NMIS_Ecopass"
-Documentation = "https://github.com/nmis-group/NMIS_Ecopass#readme"
-Source = "https://github.com/nmis-group/NMIS_Ecopass"
-Tracker = "https://github.com/nmis-group/NMIS_Ecopass/issues"
+[tool.poetry.dependencies]
+python = "^3.8"
+pydantic = {version = "^2.0", extras = ["email"]}
+email-validator = ">=2.0.0,<3.0.0"
+qrcode = ">=7.4.2"
+Pillow = ">=10.0.0"
 
-[project.optional-dependencies]
-dev = [
-    "pytest>=6.2.5",
-    "flake8>=3.8.4",
-    "black>=22.3.0",
-    "mypy"
-]
+[tool.poetry.group.dev.dependencies]
+black = "^22.3.0"
+flake8 = "^3.8.4"
+mypy = "^1.0.0"
+isort = "^5.0.0"
+pre-commit = "^2.0.0"
+pytest = "^6.2.5"
+pytest-cov = "^2.0.0"
+pytest-mock = "^3.0.0"
 
-[tool.hatch.build.targets.wheel]
-# Include the 'py.typed' file in your package
-include = [
-    "NMIS_Ecopass/py.typed"
-]
 
-# If you have additional package files to include, you can add them here
-[tool.hatch.build.targets.sdist]
-include = [
-    "NMIS_Ecopass/py.typed"
-]
+
+[[tool.poetry.source]]
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+priority = "supplemental"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
