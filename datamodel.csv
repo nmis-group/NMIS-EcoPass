@@ -1,0 +1,58 @@
+﻿Category,Sub-Category,Attribute,Data Type,Required,Description,Example
+Metadata,-,backup_reference,URL,No,Backup DPP version reference,https://example.com/backup
+Metadata,-,registration_identifier,URL,No,EU Registry URL or GS1 LiveLink,https://example.com/registration/12345
+Metadata,-,economic_operator_id,String,No,Company identifier,www.nmis.scot
+Metadata,-,last_modification,DateTime,No,Last modification timestamp,2024-08-27T14:30:00Z
+Metadata,-,predecessor,String,No,Previous version reference,REG-12344
+Metadata,-,issue_date,DateTime,No,DPP issue date,2024-01-15T09:00:00Z
+Metadata,-,version,String,No,DPP version,1.2.3
+Metadata,-,passport_identifier,UUID,No,Unique passport ID,123e4567-e89b-12d3-a456-426614174000
+Metadata,-,status,Enum,Yes,DPP status,active
+Metadata,-,expiration_date,DateTime,No,DPP expiry date,2025-01-15T09:00:00Z
+ProductIdentifier,-,batchID,String,No,Batch identifier,BCH-20240913-001
+ProductIdentifier,-,serialID,String,No,Serial number,SN-AB123456789
+ProductIdentifier,-,productStatus,Enum,Yes,Product lifecycle status,original
+Circularity,Documents,documentType,Enum,Yes,Type of document,repairManual
+Circularity,Documents,mimeType,Enum,Yes,"Document format - Pdf, jpeg,csv etc",application/pdf
+Circularity,Documents,documentURL,URL,Yes,Document location,https://example.com/manual.pdf
+Circularity,RecycledContent,preConsumerWasteRecycled,Float,No,Pre-consumer recycled % (recycle swarf?),45.0
+Circularity,RecycledContent,material,Enum,Yes,Recycled material type,Aluminum
+Circularity,RecycledContent,postConsumerWasteRecycled,Float,No,Post-consumer recycled %,30.0
+Circularity,EndOfLife,wastePrevention,URL,No,Waste prevention info,https://example.com/waste
+Circularity,EndOfLife,separateCollection,URL,No,Collection guidance,https://example.com/collection
+Circularity,Supplier,name,String,Yes,Supplier name,Eco Parts Ltd.
+Circularity,Supplier,addressCountry,String,Yes,Supplier country,Germany
+Circularity,Supplier,email,Email,Yes,Supplier email,contact@supplier.com
+CarbonFootprint,Lifecycle,lifecycleStage,Enum,Yes,Product lifecycle stage,rawMaterial
+CarbonFootprint,Lifecycle,carbonFootprint,Float,Yes,CO2 equivalent (kg),20.0
+CarbonFootprint,-,carbonFootprintStudy,URL,No,Study reference,https://example.com/study
+CarbonFootprint,-,productCarbonFootprint,Float,No,Total product CO2,100.0
+CarbonFootprint,-,performanceClass,String,No,Carbon performance class,Carbon Trust label
+Remanufacture,Process,repairId,String,Yes,Repair identifier,REP-2024-001
+Remanufacture,Process,componentInfo,Dict,Yes,Component details,"{""type"": ""turbineBlade""}"
+Remanufacture,Process,currentCondition,Enum,Yes,Component condition,repairable
+Remanufacture,Defect,defectId,String,Yes,Defect identifier,DEF-001
+Remanufacture,Defect,location,String,Yes,Defect location,blade_tip
+Remanufacture,Defect,severity,Integer,Yes,Severity (1-5),3
+Remanufacture,Step,stepId,String,Yes,Process step/parameters,STEP-001
+Remanufacture,Step,processCategory,Enum,Yes,Process category,inspection
+Remanufacture,Step,processType,Enum,Yes,Repair type,materialAddition
+Remanufacture,Test,testId,String,Yes,Test identifier,TEST-001
+Remanufacture,Test,conformity,Boolean,Yes,Test pass/fail,true
+MaterialInformation,-,materialId,String,Yes,Material identifier,MAT-2024-001
+MaterialInformation,-,tradeName,String,Yes,Commercial name,Inconel 718
+MaterialInformation,-,materialCategory,Enum,Yes,Material category,metal
+MaterialInformation,-,materialStandard,Enum,Yes,Governing standard,astm
+MaterialInformation,Composition,element,String,Yes,Chemical element,Ni
+MaterialInformation,Composition,minimum,Float,No,Min percentage,50.0
+MaterialInformation,Composition,maximum,Float,No,Max percentage,55.0
+MaterialInformation,Composition,actual,Float,No,Measured percentage,52.3
+MaterialInformation,Property,propertyName,String,Yes,Property identifier,tensileStrength
+MaterialInformation,Property,value,Float,Yes,Property value,1375.0
+MaterialInformation,Property,unit,String,Yes,Measurement unit,MPa
+MaterialInformation,Certification,certificationType,Enum,Yes,Certificate type,EN10204_3.1
+MaterialInformation,Certification,certificateNumber,String,Yes,Certificate ID,CERT-2024-001
+MaterialInformation,Traceability,batchNumber,String,Yes,Batch/heat number,IN718-HEAT-001
+MaterialInformation,Traceability,manufacturer,String,Yes,Material manufacturer,Special Metals
+MaterialInformation,Sustainability,recycledContent,Object,No,Recycling info,See RecycledContent
+MaterialInformation,Sustainability,carbonFootprint,Float,No,CO2 per kg,12.5

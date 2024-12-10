@@ -1,6 +1,7 @@
 from pydantic import BaseModel, Field, ConfigDict, HttpUrl
-from typing import Optional,List
+from typing import Optional, List
 from enum import Enum
+
 
 class LifecycleStage(str, Enum):
     RAWMATERIALEXTRACTION = "rawMaterial"
@@ -8,7 +9,8 @@ class LifecycleStage(str, Enum):
     MAINPRODUCTION = "mainProduction"
     DISTRIBUTION = "distribution"
     RECYCLING = "recycling"
-    REMANUFACTURE="remanufacture"
+    REMANUFACTURE = "remanufacture"
+
 
 class LifecycleStageCarbonFootprint(BaseModel):
     lifecycleStage: LifecycleStage = Field(
@@ -19,6 +21,7 @@ class LifecycleStageCarbonFootprint(BaseModel):
         default=None,
         description="Carbon footprint associated with this lifecycle stage in Kilograms"
     )
+
 
 class CarbonFootprint(BaseModel):
     model_config = ConfigDict(
@@ -36,9 +39,11 @@ class CarbonFootprint(BaseModel):
             }
         }
     )
-    carbonFootprintPerLifecycleStage: Optional[List[LifecycleStageCarbonFootprint]] = Field(
+    carbonFootprintPerLifecycleStage: Optional[
+        List[LifecycleStageCarbonFootprint]] = Field(
         default=None,
-        description="List of carbon footprints associated with each stage of the product's lifecycle"
+        description="List of carbon footprints associated with each stage of "
+                    "the product's lifecycle"
     )
     carbonFootprintStudy: Optional[HttpUrl] = Field(
         default=None,
@@ -46,9 +51,11 @@ class CarbonFootprint(BaseModel):
     )
     productCarbonFootprint: Optional[float] = Field(
         default=None,
-        description="Carbon footprint associated with the battery component of the product"
+        description="Carbon footprint associated with the battery component of "
+                    "the product"
     )
     carbonFootprintPerformanceClass: Optional[str] = Field(
         default=None,
-        description="Performance class of the product based on its carbon footprint"
+        description="Performance class of the product based on its carbon "
+                    "footprint"
     )

@@ -164,7 +164,7 @@ class RepairModel(BaseModel):
                         "testType": "dimensional",
                         "parameters": {"accuracy": 0.01},
                         "results": {"tipLength": 150.05, "tipWidth": 45.02},
-                        "conformity": true,
+                        "conformity": True,
                         "date": "2024-02-02T10:00:00",
                         "personnel": "INSP-TECH-002"
                     }
