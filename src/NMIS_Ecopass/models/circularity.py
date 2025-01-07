@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, HttpUrl, ConfigDict, EmailStr
+from pydantic import BaseModel, Field, HttpUrl, ConfigDict
 from typing import Optional, List, Annotated, Union
 from enum import Enum
 
@@ -10,7 +10,9 @@ class DocumentType(str, Enum):
     REMANUFACTUREMANUAL = "remanufactureManual"
     REPAIRMANUAL = "repairManual"
     DRAWING = "drawing"
+    QIF = "qif"
     OTHERMANUAL = "otherManual"
+
 
 
 class MimeType(str, Enum):
@@ -21,7 +23,7 @@ class MimeType(str, Enum):
     HTML = "text/html"
     XML = "application/xml"
     CSV = "text/csv"
-
+    QIF = "application/qif"
     # 3D Model MIME types
     GLTF_JSON = "model/gltf+json"
     GLTF_BINARY = "model/gltf-binary"
@@ -77,19 +79,19 @@ class RecycledMaterial(str, Enum):
 class RecycledMaterialInfo(BaseModel):
     material: RecycledMaterial = Field(
         default=None,
-        description="The type of recycled material used.")
+        description="The type of recycled material used within the product.")
     materialInfoURL: HttpUrl = Field(
         default=None,
-        description="A URL linking to information about this material, such as material properties, alloy information, etc.")
+        description="A URL linking to information about the recycled material, such as material properties, alloy information, etc.")
 
 
 class RecycledContent(BaseModel):
-    preConsumerShare: PerConsumerWasteRecycled = Field(
-        default=None, description="Pre-consumer waste share")
+    preConsumerShare: Annotated[float, Field(gt=0, le=100)] = Field(
+        default=None, description="Pre-consumer waste recycled percentage")
     recycledMaterial: RecycledMaterialInfo = Field(
         default=None, description="Type of recycled material")
-    postConsumerShare: PostConsumerWasteRecycled = Field(
-        default=None, description="Post-consumer waste share")
+    postConsumerShare: Annotated[float, Field(gt=0, le=100)] = Field(
+        default=0.0, description="Post-consumer waste recycled percentage")
 
 
 
@@ -116,13 +118,13 @@ class AddressOfSupplier(BaseModel):
 class SupplierInformation(BaseModel):
     name: str = Field(
         default=None,
-        description="Supplier Name"
+        description="Supplier who can provide spares and end of life support"
     )
     address: AddressOfSupplier = Field(
         default=None,
         description="Address of supplier"
     )
-    email: EmailStr = Field(
+    email: str = Field(
         default=None,
         description="Supplier email address"
     )
@@ -155,28 +157,20 @@ class Circularity(BaseModel):
                 ],
                 "recycledContent": [
                     {
-                        "preConsumerShare": {
-                            "preConsumerWasteRecycled": 45.0
-                        },
+                        "preConsumerShare": 45.0,
                         "recycledMaterial": {
                             "material": "Aluminum",
                             "materialInfoURL": "https://example.com/materials/aluminum-info"
                         },
-                        "postConsumerShare": {
-                            "postConsumerWasteRecycled": 30.0
-                        }
+                        "postConsumerShare": 30.0
                     },
                     {
-                        "preConsumerShare": {
-                            "preConsumerWasteRecycled": 60.0
-                        },
+                        "preConsumerShare": 60.0,
                         "recycledMaterial": {
                             "material": "Plastic",
                             "materialInfoURL": "https://example.com/materials/plastic-info"
                         },
-                        "postConsumerShare": {
-                            "postConsumerWasteRecycled": 40.0
-                        }
+                        "postConsumerShare": 40.0
                     }
                 ],
                 "endOfLifeInformation": {

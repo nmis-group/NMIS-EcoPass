@@ -10,6 +10,8 @@
 - Define a structured DPP model using Pydantic.
 - Validate and manipulate metadata objects easily.
 - Utility functions for common operations such as creating, updating, and validating metadata.
+- Comprehensive models for material composition, remanufacturing, and circularity tracking.
+- Carbon footprint tracking across product lifecycle stages.
 
 
 ## **Table of Contents**
@@ -24,6 +26,8 @@
     - [Product Identifier](#product-identifier)
     - [Circularity](#circularity)
     - [Carbon Footprint](#carbon-footprint)
+    - [Material Information](#material-information)
+    - [Remanufacture](#remanufacture)
 6. [Contributing](#contributing)
 7. [License](#license)
 
@@ -48,43 +52,49 @@ This guide will show you how to create a Digital Product Passport (DPP) using th
 First, import the necessary classes from `NMIS_Ecopass`:
 
 ```python
-from NMIS_Ecopass import DigitalProductPassport as DPP, Metadata, Circularity, ProductIdentifier, CarbonFootprint
+from NMIS_Ecopass import (
+    DigitalProductPassport as DPP,
+    Metadata,
+    Circularity,
+    ProductIdentifier,
+    CarbonFootprint,
+    RepairModel,
+    MaterialInformation
+)
 from datetime import datetime
 ```
 
 #### **Step 2: Create an Instance of DPP and Its Components**
 
-You can start by creating an instance of `DPP` and then initialize its components (`Metadata`, `Circularity`, `ProductIdentifier`, `CarbonFootprint`) as follows:
+You can start by creating an instance of `DPP` and then initialize its components:
 
 ```python
 # Create an empty DPP instance
 DPP_instance = DPP()
 
-# Initialize components
-DPP_instance.metadata = Metadata()
-DPP_instance.circularity = Circularity()
-DPP_instance.productIdentifier = ProductIdentifier()
-DPP_instance.carbonFootprint = CarbonFootprint()
-```
-
-Now, you can add data to each component:
-
-```python
-# Add metadata information
+# Components are automatically initialized with default factories
+# You can access and modify them directly
 DPP_instance.metadata.economic_operator_id = "www.nmis.scot"
 DPP_instance.metadata.issue_date = datetime.now()
 DPP_instance.metadata.passport_identifier = "123e4567-e89b-12d3-a456-426614174000"
 DPP_instance.metadata.status = "draft"
 
 # Add circularity information
-DPP_instance.circularity.renewable_content = 30.0
-# Additional fields can be added similarly
+DPP_instance.circularity.recycledContent = [{
+    "preConsumerShare": {"preConsumerWasteRecycled": 30.0},
+    "recycledMaterial": {
+        "material": "Aluminum",
+        "materialInfoURL": "https://example.com/materials/aluminum"
+    },
+    "postConsumerShare": {"postConsumerWasteRecycled": 20.0}
+}]
 
-# Add product identifier information (Example fields, replace with actual)
+# Add product identifier information
 DPP_instance.productIdentifier.batchID = "BCH-20240913-001"
 DPP_instance.productIdentifier.serialID = "SN-AB123456789"
+DPP_instance.productIdentifier.productStatus = "original"
 
-# Add carbon footprint information (Example fields, replace with actual)
+# Add carbon footprint information
 DPP_instance.carbonFootprint.productCarbonFootprint = 100.0
 ```
 
@@ -131,33 +141,52 @@ DPP_instance.metadata.version = "2.0.0"
 ### **Model Details**
 
 #### **Metadata**
-- **`backup_reference`**: Optional URL to a backup version of the DPP.
-- **`registration_identifier`**: URL linking to the official registration of the DPP.
-- **`economic_operator_id`**: Identifier for the economic operator (e.g., tax code).
-- **`last_modification`**: Timestamp of the last modification.
-- **`predecessor`**: Optional reference to the previous version of the DPP.
-- **`issue_date`**: Date when the DPP was issued.
-- **`version`**: Internal version number for the DPP.
-- **`passport_identifier`**: Unique UUID4 identifier for the product passport.
-- **`status`**: Current status of the metadata (e.g., draft, active, inactive, expired).
-- **`expiration_date`**: Optional date when the DPP will expire.
+- **`backup_reference`**: Optional URL to a backup version of the DPP
+- **`registration_identifier`**: URL linking to the official registration
+- **`economic_operator_id`**: Identifier for the economic operator
+- **`last_modification`**: Timestamp of the last modification
+- **`predecessor`**: Optional reference to the previous version
+- **`issue_date`**: Date when the DPP was issued
+- **`version`**: Internal version number
+- **`passport_identifier`**: Unique UUID4 identifier
+- **`status`**: Current status (draft, active, inactive, expired)
+- **`expiration_date`**: Optional expiration date
 
 #### **Product Identifier**
-- **`batchID`**: Unique batch identifier for the product.
-- **`serialID`**: Unique serial identifier for the product.
-- **`productStatus`**: Status of the product (e.g., original, refurbished).
+- **`batchID`**: Batch identifier for products manufactured under similar conditions
+- **`serialID`**: Unique product identifier
+- **`productStatus`**: Current status (original, repaired, maintained, remanufactured, recycled)
 
 #### **Circularity**
-- **`dismantlingAndRemovalInformation`**: List of documents related to dismantling and removal of the product, including document type, MIME type, and resource path.
-- **`recycledContent`**: List containing information on pre-consumer and post-consumer recycled material shares, type of recycled material, and associated URLs.
-- **`endOfLifeInformation`**: URLs and information about waste prevention, separate collection, and collection points for the product at the end of its life cycle.
-- **`supplierInformation`**: Information about suppliers, including name, address, email, and website.
+- **`dismantlingAndRemovalInformation`**: Documentation for dismantling and removal
+- **`recycledContent`**: Information about pre-consumer and post-consumer recycled materials
+- **`endOfLifeInformation`**: Details about waste prevention and collection
+- **`supplierInformation`**: Supplier details including contact information
 
 #### **Carbon Footprint**
-- **`carbonFootprintPerLifecycleStage`**: List of lifecycle stages with associated carbon footprints (e.g., rawMaterial, production).
-- **`carbonFootprintStudy`**: URL linking to the study or resource providing carbon footprint details.
-- **`productCarbonFootprint`**: Total carbon footprint value of the product.
-- **`carbonFootprintPerformanceClass`**: Classification label for the product's carbon footprint performance (e.g., "Carbon Trust label").
+- **`carbonFootprintPerLifecycleStage`**: Carbon footprint for each lifecycle stage
+- **`carbonFootprintStudy`**: URL to detailed carbon footprint documentation
+- **`productCarbonFootprint`**: Total product carbon footprint
+- **`carbonFootprintPerformanceClass`**: Performance classification
+
+#### **Material Information**
+- **`materialId`**: Unique material identifier
+- **`tradeName`**: Commercial name of the material
+- **`materialCategory`**: Category (metal, polymer, ceramic, etc.)
+- **`composition`**: Detailed chemical composition
+- **`properties`**: Physical and mechanical properties
+- **`certifications`**: Material certifications
+- **`traceability`**: Batch and manufacturing information
+- **`sustainability`**: Recycled content and environmental impact
+
+#### **Remanufacture**
+- **`repairId`**: Unique repair identifier
+- **`componentInfo`**: Component details
+- **`currentCondition`**: Assessment of current condition
+- **`defects`**: Identified defects and their details
+- **`processSteps`**: Repair process documentation
+- **`testResults`**: Test and inspection results
+- **`certification`**: Repair certification information
 
 ## **Contributing**
 

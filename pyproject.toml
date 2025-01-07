@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "NMIS_Ecopass"
-version = "0.1.13"
-description = "A package for creating and managing digital product passport metadata"
+version = "0.1.14"
+description = "A package for creating and managing digital product passports"
 authors = ["Syed Awais Hassan Munawar <syed.munawar@strath.ac.uk>"]
 readme = "README.md"
 packages = [{include = "NMIS_Ecopass", from = "src"}]
@@ -9,8 +9,7 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-pydantic = {version = "^2.0", extras = ["email"]}
-email-validator = ">=2.0.0,<3.0.0"
+pydantic = {version = "^2.0"}
 qrcode = ">=7.4.2"
 Pillow = ">=10.0.0"
 

@@ -1,5 +1,5 @@
-from pydantic import BaseModel, Field, HttpUrl, ConfigDict, EmailStr
-from typing import Optional, List, Dict, Union, Annotated,Any
+from pydantic import BaseModel, Field, HttpUrl, ConfigDict
+from typing import Optional, List, Dict,Any
 from enum import Enum
 from datetime import datetime
 from .circularity import SupplierInformation,  RecycledContent
@@ -38,6 +38,17 @@ class MaterialCertificationType(str, Enum):
     TYPE_3_2 = "EN10204_3.2"
     CUSTOM = "custom"
 
+    @property
+    def description(self) -> str:
+        descriptions: Dict[str, str] = {
+            "EN10204_2.1": "Certificate of Compliance - A document issued by the manufacturer confirming that the supplied products are in compliance with the order requirements",
+            "EN10204_2.2": "Test Report - A document issued by the manufacturer in which they declare that the products delivered are in compliance with the requirements of the order and supply test results",
+            "EN10204_3.1": "Inspection Certificate - Document issued by the manufacturer with test results from specific inspection on the delivered products",
+            "EN10204_3.2": "Inspection Certificate with third party verification - Similar to 3.1 but with additional verification by an independent third party",
+            "custom": "Custom certification type not covered by EN10204 standard"
+        }
+        return descriptions[self.value]
+
 class MaterialProperty(BaseModel):
     propertyName: str = Field(
         description="Name of the material property"
@@ -61,21 +72,9 @@ class MaterialComposition(BaseModel):
     element: str = Field(
         description="Chemical element or compound"
     )
-    minimum: Optional[float] = Field(
-        default=None,
-        description="Minimum percentage content"
-    )
-    maximum: Optional[float] = Field(
-        default=None,
-        description="Maximum percentage content"
-    )
-    actual: Optional[float] = Field(
-        default=None,
-        description="Actual measured percentage"
-    )
     unit: str = Field(
         default="weight_percent",
-        description="Unit of measurement for composition"
+        description="Percentage weight for composition"
     )
 
 class MaterialCertification(BaseModel):

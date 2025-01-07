@@ -1,6 +1,6 @@
 --index-url https://test.pypi.org/simple/
 --extra-index-url https://pypi.org/simple/
-NMIS-Ecopass==0.1.7  # Replace with your current version
+NMIS-Ecopass==0.1.14  # Replace with your current version
 qrcode>=7.4.2
 Pillow>=10.0.0
 pytest==8.3.2
