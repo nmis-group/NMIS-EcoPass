@@ -102,26 +102,8 @@ class MaterialTraceability(BaseModel):
     batchNumber: str = Field(
         description="Material batch or heat number"
     )
-    manufacturer: str = Field(
-        description="Material manufacturer"
-    )
-    productionDate: datetime = Field(
-        description="Manufacturing date"
-    )
-    supplierInformation: Optional['SupplierInformation'] = Field(
-        default=None,
-        description="Material supplier information"
-    )
-    manufacturingRoute: Optional[List[str]] = Field(
-        default=None,
-        description="Manufacturing process steps"
-    )
 
 class MaterialSustainability(BaseModel):
-    recycledContent: Optional['RecycledContent'] = Field(
-        default=None,
-        description="Recycled material content information"
-    )
     carbonFootprint: Optional[float] = Field(
         default=None,
         description="Carbon footprint per kg of material"
@@ -130,13 +112,9 @@ class MaterialSustainability(BaseModel):
         default=None,
         description="Environmental certifications"
     )
-    recyclability: Optional[bool] = Field(
+    circularityReference: Optional[str] = Field(
         default=None,
-        description="Whether material is recyclable"
-    )
-    disposalInstructions: Optional[str] = Field(
-        default=None,
-        description="Instructions for material disposal"
+        description="Reference to circularity data containing recycling and disposal info"
     )
 
 class MaterialInformation(BaseModel):
@@ -216,16 +194,53 @@ class MaterialInformation(BaseModel):
         default=None,
         description="Additional applicable standards"
     )
-    storageRequirements: Optional[str] = Field(
-        default=None,
-        description="Storage and handling requirements"
-    )
     documentation: Optional[Dict[str, HttpUrl]] = Field(
         default=None,
         description="Additional documentation links"
     )
 
 class ProductMaterial(BaseModel):
+    model_config = ConfigDict(
+        extra='allow',
+        json_schema_extra={
+            "example": {
+                "productId": "PROD-2024-001",
+                "components": {
+                    "housing": {
+                        "materialId": "MAT-2024-001",
+                        "tradeName": "Aluminum 6061-T6",
+                        "materialCategory": "metal",
+                        "materialStandard": "astm",
+                        "standardDesignation": "ASTM B209",
+                        "composition": [
+                            {
+                                "element": "Al",
+                                "unit": "weight_percent",
+                            }
+                        ],
+                        "properties": [
+                            {
+                                "propertyName": "tensileStrength",
+                                "value": 310.0,
+                                "unit": "MPa"
+                            }
+                        ],
+                        "traceability": {
+                            "batchNumber": "BATCH-001"
+                        }
+                    }
+                },
+                "totalMass": 2.5,
+                "materialBreakdown": {
+                    "aluminum": 85.0,
+                    "steel": 15.0
+                },
+                "recycledContentTotal": 30.5,
+                "hazardousMaterials": ["chromium_coating"],
+                "circularityReference": "example.com/circularity-id"
+            }
+        }
+    )
     productId: str = Field(
         description="Reference to product identifier"
     )
@@ -248,5 +263,5 @@ class ProductMaterial(BaseModel):
     )
     circularityReference: Optional[str] = Field(
         default=None,
-        description="Reference to circularity data"
+        description="Reference to circularity data URL"
     )

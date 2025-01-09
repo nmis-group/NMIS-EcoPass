@@ -1,147 +1,160 @@
 import pytest
 from datetime import datetime
-from uuid import UUID
 from pydantic import ValidationError
 
 from NMIS_Ecopass.models.digitalProductPassport import DigitalProductPassport
 from NMIS_Ecopass.models.metadata import Metadata, StatusEnum
 from NMIS_Ecopass.models.productIdentifier import ProductIdentifier, ProductStatus
-from NMIS_Ecopass.models.circularity import (
-    Circularity, DocumentType, MimeType, ResourcePath
-)
-from NMIS_Ecopass.models.carbonFootprint import (
-    CarbonFootprint, LifecycleStage, LifecycleStageCarbonFootprint
-)
-from NMIS_Ecopass.models.remanufacture import (
-    RepairModel, ProcessCategory, RepairType, ComponentCondition
-)
-from NMIS_Ecopass.models.materialComposition import (
-    MaterialInformation, MaterialCategory, MaterialForm, MaterialStandard
-)
+from NMIS_Ecopass.models.remanufacture import RepairModel, ComponentCondition
 
 def test_create_minimal_passport():
     """Test creating a minimal digital product passport"""
-    passport = DigitalProductPassport()
+    passport = DigitalProductPassport(
+        reManufacture=RepairModel(
+            repairId="REP-001",
+            componentInfo={"type": "generic"},
+            currentCondition=ComponentCondition.UNKNOWN
+        ),
+        productMaterial={
+            "productId": "PROD-001",
+            "components": {
+                "main": {
+                    "materialId": "MAT-001",
+                    "tradeName": "Generic Material",
+                    "materialCategory": "other",
+                    "materialStandard": "custom",
+                    "standardDesignation": "N/A",
+                    "composition": [{
+                        "element": "Generic",
+                        "unit": "weight_percent"
+                    }],
+                    "materialForm": "solid",
+                    "properties": [{
+                        "propertyName": "density",
+                        "value": 1.0,
+                        "unit": "g/cm3"
+                    }],
+                    "traceability": {
+                        "batchNumber": "BATCH-001"
+                    }
+                }
+            },
+            "totalMass": 1.0,
+            "materialBreakdown": {"generic": 100.0}
+        }
+    )
+    
+    # Test that required fields are created with default values
     assert isinstance(passport.metadata, Metadata)
     assert isinstance(passport.productIdentifier, ProductIdentifier)
-    assert isinstance(passport.circularity, Circularity)
-    assert isinstance(passport.carbonFootprint, CarbonFootprint)
     assert isinstance(passport.reManufacture, RepairModel)
-    assert isinstance(passport.materialInformation, MaterialInformation)
+    assert passport.productMaterial.productId == "PROD-001"
 
 def test_create_complete_passport():
-    """Test creating a complete digital product passport with all fields"""
+    """Test creating a complete digital product passport"""
     passport = DigitalProductPassport(
         metadata=Metadata(
-            economic_operator_id="ECO-123456789",
+            economic_operator_id="ECO-001",
             issue_date=datetime.now(),
             status=StatusEnum.ACTIVE
         ),
         productIdentifier=ProductIdentifier(
-            batchID="BCH-20240913-001",
-            serialID="SN-AB123456789",
+            batchID="BATCH-001",
+            serialID="SN-001",
             productStatus=ProductStatus.ORIGINAL
         ),
-        circularity=Circularity(
-            dismantlingAndRemovalInformation=[{
-                "documentType": DocumentType.DISMANTLINGMANUAL,
-                "mimeType": MimeType.PDF,
-                "documentURL": ResourcePath(
-                    resourcePath="https://example.com/manual.pdf"
-                )
-            }]
-        ),
-        carbonFootprint=CarbonFootprint(
-            carbonFootprintPerLifecycleStage=[
-                LifecycleStageCarbonFootprint(
-                    lifecycleStage=LifecycleStage.RAWMATERIALEXTRACTION,
-                    carbonFootprint=20.5
-                )
-            ],
-            productCarbonFootprint=100.0
-        ),
         reManufacture=RepairModel(
-            repairId="REP-2024-001",
-            componentInfo={"type": "turbineBlade"},
+            repairId="REP-001",
+            componentInfo={"type": "generic"},
             currentCondition=ComponentCondition.SERVICEABLE
         ),
-        materialInformation=MaterialInformation(
-            materialId="MAT-2024-001",
-            tradeName="Inconel 718",
-            materialCategory=MaterialCategory.METAL,
-            materialStandard=MaterialStandard.ASTM,
-            standardDesignation="ASTM B637",
-            composition=[],
-            materialForm=MaterialForm.BAR,
-            properties=[],
-            traceability={
-                "batchNumber": "BATCH-001",
-                "manufacturer": "ACME Corp",
-                "productionDate": datetime.now()
-            }
-        )
+        productMaterial={
+            "productId": "PROD-001",
+            "components": {
+                "main": {
+                    "materialId": "MAT-001",
+                    "tradeName": "Test Material",
+                    "materialCategory": "metal",
+                    "materialStandard": "astm",
+                    "standardDesignation": "ASTM-001",
+                    "composition": [{
+                        "element": "Fe",
+                        "unit": "weight_percent"
+                    }],
+                    "materialForm": "bar",
+                    "properties": [{
+                        "propertyName": "density",
+                        "value": 7.8,
+                        "unit": "g/cm3"
+                    }],
+                    "traceability": {
+                        "batchNumber": "BATCH-001"
+                    }
+                }
+            },
+            "totalMass": 1.0,
+            "materialBreakdown": {"metal": 100.0}
+        }
     )
     
-    assert passport.metadata.economic_operator_id == "ECO-123456789"
-    assert passport.productIdentifier.serialID == "SN-AB123456789"
-    assert passport.carbonFootprint.productCarbonFootprint == 100.0
-    assert passport.materialInformation.tradeName == "Inconel 718"
+    # Test that fields are set correctly
+    assert passport.metadata.economic_operator_id == "ECO-001"
+    assert passport.productIdentifier.serialID == "SN-001"
+    assert passport.reManufacture.repairId == "REP-001"
+    assert passport.productMaterial.productId == "PROD-001"
 
 def test_passport_validation():
-    """Test validation of digital product passport data"""
+    """Test validation of digital product passport"""
     with pytest.raises(ValidationError):
         DigitalProductPassport(
             productIdentifier=ProductIdentifier(
-                batchID="123",  # Valid
-                serialID="123",  # Valid
-                productStatus="invalid"  # Invalid status
+                batchID="123",
+                serialID="123",
+                productStatus="invalid_status"  # Invalid status
             )
         )
 
 def test_passport_serialization():
     """Test serialization of digital product passport"""
     passport = DigitalProductPassport(
-        metadata=Metadata(
-            economic_operator_id="ECO-123456789",
-            issue_date=datetime.now(),
-            status=StatusEnum.ACTIVE
-        )
+        reManufacture=RepairModel(
+            repairId="REP-001",
+            componentInfo={"type": "generic"},
+            currentCondition=ComponentCondition.UNKNOWN
+        ),
+        productMaterial={
+            "productId": "PROD-001",
+            "components": {
+                "main": {
+                    "materialId": "MAT-001",
+                    "tradeName": "Generic Material",
+                    "materialCategory": "other",
+                    "materialStandard": "custom",
+                    "standardDesignation": "N/A",
+                    "composition": [{
+                        "element": "Generic",
+                        "unit": "weight_percent"
+                    }],
+                    "materialForm": "solid",
+                    "properties": [{
+                        "propertyName": "density",
+                        "value": 1.0,
+                        "unit": "g/cm3"
+                    }],
+                    "traceability": {
+                        "batchNumber": "BATCH-001"
+                    }
+                }
+            },
+            "totalMass": 1.0,
+            "materialBreakdown": {"generic": 100.0}
+        }
     )
     
+    # Test serialization to dict
     passport_dict = passport.model_dump()
     assert isinstance(passport_dict, dict)
     assert "metadata" in passport_dict
-    assert passport_dict["metadata"]["economic_operator_id"] == "ECO-123456789"
-
-def test_passport_update():
-    """Test updating passport fields"""
-    passport = DigitalProductPassport()
-    
-    # Update product identifier
-    passport.productIdentifier.productStatus = ProductStatus.REPAIRED
-    assert passport.productIdentifier.productStatus == ProductStatus.REPAIRED
-    
-    # Update carbon footprint
-    passport.carbonFootprint.productCarbonFootprint = 150.0
-    assert passport.carbonFootprint.productCarbonFootprint == 150.0
-
-def test_nested_validation():
-    """Test validation of nested models"""
-    with pytest.raises(ValidationError):
-        DigitalProductPassport(
-            materialInformation=MaterialInformation(
-                materialId="MAT-2024-001",
-                tradeName="Inconel 718",
-                materialCategory="invalid_category",  # Invalid category
-                materialStandard=MaterialStandard.ASTM,
-                standardDesignation="ASTM B637",
-                composition=[],
-                materialForm=MaterialForm.BAR,
-                properties=[],
-                traceability={
-                    "batchNumber": "BATCH-001",
-                    "manufacturer": "ACME Corp",
-                    "productionDate": datetime.now()
-                }
-            )
-        )
+    assert "productIdentifier" in passport_dict
+    assert "reManufacture" in passport_dict
+    assert "productMaterial" in passport_dict

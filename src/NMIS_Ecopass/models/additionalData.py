@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field, HttpUrl
 
 class AdditionalData(BaseModel):
     """
-    Pydantic model for storing additional DPP data with flexible structure
+    Additional DPP data with flexible structure
     """
     data_type: str = Field(
         ...,
@@ -29,17 +29,9 @@ class AdditionalData(BaseModel):
         None,
         description="Username or ID of the creator"
     )
-    
-    # Optional reference fields
-    reference_id: Optional[str] = Field(
+    reference_model: Optional[HttpUrl] = Field(
         None,
-        description="ID reference to related object",
-        max_length=255
-    )
-    reference_model: Optional[str] = Field(
-        None,
-        description="Name of the related model",
-        max_length=100
+        description="URL reference to documentation explaining the data model or schema",
     )
     
     description: Optional[str] = Field(
@@ -59,9 +51,11 @@ class AdditionalData(BaseModel):
                         "wind": "20%"
                     }
                 },
-                "url": "https://example.com/documentation",
-                "reference_id": "123",
-                "reference_model": "Product",
+                "url": "https://company-name.com/documentation",
+                "created_at": "2024-03-20T10:00:00",
+                "updated_at": "2024-03-20T10:00:00",
+                "created_by": "company_name",
+                "reference_model": "https://company-name.com/schemas/product",
                 "description": "Environmental impact metrics for product 123"
             }
         }

@@ -10,7 +10,6 @@ class DocumentType(str, Enum):
     REMANUFACTUREMANUAL = "remanufactureManual"
     REPAIRMANUAL = "repairManual"
     DRAWING = "drawing"
-    QIF = "qif"
     OTHERMANUAL = "otherManual"
 
 
@@ -74,6 +73,7 @@ class RecycledMaterial(str, Enum):
     COBALT = "Cobalt"
     NICKEL = "Nickel"
     TITANIUM = "Titanium"
+    OTHER = "Other"
 
 
 class RecycledMaterialInfo(BaseModel):

@@ -99,6 +99,13 @@ class TestResult(BaseModel):
         description="Testing personnel"
     )
 
+class QIFDocument(BaseModel):
+    documentId: str = Field(description="QIF document identifier")
+    uri: HttpUrl = Field(description="URI to QIF document location")
+    hash: str = Field(description="SHA-256 hash of QIF document")
+    timestamp: datetime = Field(description="Document creation/update timestamp")
+
+    
 class RepairHistory(BaseModel):
     repairId: str = Field(
         description="Reference to previous repair"
@@ -119,11 +126,6 @@ class RepairModel(BaseModel):
         json_schema_extra={
             "example": {
                 "repairId": "REP-2024-001",
-                "componentInfo": {
-                    "type": "turbineBlade",
-                    "position": "stage1",
-                    "operatingHours": 25000
-                },
                 "currentCondition": "repairable",
                 "defects": [
                     {
@@ -161,12 +163,34 @@ class RepairModel(BaseModel):
                 "testResults": [
                     {
                         "testId": "TEST-001",
-                        "testType": "dimensional",
-                        "parameters": {"accuracy": 0.01},
-                        "results": {"tipLength": 150.05, "tipWidth": 45.02},
+                        "testType": "penetrantInspection",
+                        "parameters": {"penetrantType": "Type II"},
+                        "results": {"indicationFound": False},
                         "conformity": True,
                         "date": "2024-02-02T10:00:00",
-                        "personnel": "INSP-TECH-002"
+                        "personnel": "NDT-TECH-001"
+                    }
+                ],
+                "approvals": {
+                    "inspector": {"name": "John Smith", "id": "INSP-001", "date": "2024-02-03T10:00:00"},
+                    "supervisor": {"name": "Jane Doe", "id": "SUP-001", "date": "2024-02-03T11:00:00"}
+                },
+                "certification": {
+                    "certificateNumber": "CERT-2024-001",
+                    "issueDate": "2024-02-03T12:00:00",
+                    "documentUrl": "https://nmis.scot/certificates/REP-2024-001.pdf"
+                },
+                "nextMaintenanceDue": "2025-02-03T00:00:00",
+                "restrictions": [
+                    "Maximum operating temperature: 1200°C",
+                    "Inspection required after 5000 operating hours"
+                ],
+                "qifDocuments": [
+                    {
+                        "documentId": "QIF-2024-001",
+                        "uri": "https://nmis.scot/qif/REP-2024-001/inspection.qif",
+                        "hash": "a1b2c3d4e5f6...",
+                        "timestamp": "2024-02-01T11:00:00"
                     }
                 ]
             }
@@ -176,31 +200,24 @@ class RepairModel(BaseModel):
     repairId: str = Field(
         description="Unique repair identifier"
     )
-    componentInfo: Dict[str, Any] = Field(
-        description="Component information including type, serial number, etc."
-    )
     currentCondition: ComponentCondition = Field(
         description="Current condition assessment"
     )
-    defects: Optional[Union[DefectInformation, List[DefectInformation]]] = Field(
+    defects: Optional[List[DefectInformation]] = Field(
         default=None,
         description="Identified defects"
     )
-    repairHistory: Optional[Union[RepairHistory, List[RepairHistory]]] = Field(
+    repairHistory: Optional[List[RepairHistory]] = Field(
         default=None,
         description="History of previous repairs"
     )
-    processSteps: Optional[Union[ProcessStep, List[ProcessStep]]] = Field(
+    processSteps: Optional[List[ProcessStep]] = Field(
         default=None,
         description="Repair process steps"
     )
-    testResults: Optional[Union[TestResult, List[TestResult]]] = Field(
+    testResults: Optional[List[TestResult]] = Field(
         default=None,
-        description="Test and inspection results"
-    )
-    qualityPlan: Optional[Dict[str, Any]] = Field(
-        default=None,
-        description="Quality control requirements"
+        description="Test results"
     )
     approvals: Optional[Dict[str, Any]] = Field(
         default=None,
@@ -208,7 +225,7 @@ class RepairModel(BaseModel):
     )
     certification: Optional[Dict[str, Any]] = Field(
         default=None,
-        description="Certification information"
+        description="Certification information - url to certification document"
     )
     nextMaintenanceDue: Optional[datetime] = Field(
         default=None,
@@ -217,4 +234,8 @@ class RepairModel(BaseModel):
     restrictions: Optional[List[str]] = Field(
         default=None,
         description="Post-repair operational restrictions"
+    )
+    qifDocuments: Optional[List[QIFDocument]] = Field(
+        default=[],
+        description="List of associated QIF documents"
     )
