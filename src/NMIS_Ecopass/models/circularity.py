@@ -87,11 +87,23 @@ class RecycledMaterialInfo(BaseModel):
 
 class RecycledContent(BaseModel):
     preConsumerShare: Annotated[float, Field(gt=0, le=100)] = Field(
-        default=None, description="Pre-consumer waste recycled percentage")
+        default=None, 
+        description="Pre-consumer waste recycled percentage",
+        example=45.0
+    )
     recycledMaterial: RecycledMaterialInfo = Field(
-        default=None, description="Type of recycled material")
+        default=None, 
+        description="Type of recycled material",
+        example={
+            "material": "Aluminum",
+            "materialInfoURL": "https://example.com/materials/aluminum-info"
+        }
+    )
     postConsumerShare: Annotated[float, Field(gt=0, le=100)] = Field(
-        default=0.0, description="Post-consumer waste recycled percentage")
+        default=0.0, 
+        description="Post-consumer waste recycled percentage",
+        example=30.0
+    )
 
 
 

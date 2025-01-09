@@ -31,16 +31,25 @@ class ComponentCondition(str, Enum):
 
 class ProcessStep(BaseModel):
     stepId: str = Field(
-        description="Unique identifier for process step"
+        description="Unique identifier for process step",
+        example="STEP-2024-001"
     )
     processCategory: ProcessCategory = Field(
-        description="Category of process step"
+        description="Category of process step (e.g., inspection, repair, testing)",
+        example="inspection"
     )
     processType: RepairType = Field(
-        description="Type of repair process"
+        description="Type of repair process (e.g., materialAddition, cleaning)",
+        example="materialAddition"
     )
-    parameters: Dict[str, Any] = Field(
-        description="Process-specific parameters and values"
+    parameters: Optional[Dict[str, Any]] = Field(
+        description="Process-specific parameters and values",
+        example={
+            "temperature": 200,
+            "pressure": 50,
+            "duration": 30,
+            "method": "laser_cladding"
+        }
     )
     startTime: datetime = Field(
         description="Process step start time"
@@ -57,34 +66,43 @@ class ProcessStep(BaseModel):
 
 class DefectInformation(BaseModel):
     defectId: str = Field(
-        description="Unique defect identifier"
+        description="Unique defect identifier (format: DEF-YYYY-XXX)",
+        example="DEF-2024-001"
     )
     description: str = Field(
-        description="Description of defect"
+        description="Detailed description of the defect including type and characteristics",
+        example="Surface crack on leading edge, approximately 5mm in length"
     )
     location: str = Field(
-        description="Defect location on component"
+        description="Specific location of defect on component using standard reference points",
+        example="Leading edge, 50mm from root, pressure side"
     )
     dimensions: Dict[str, float] = Field(
-        description="Measured dimensions of defect"
+        description="Measured dimensions of defect in millimeters",
+        example={"length": 5.0, "width": 0.5, "depth": 2.0}
     )
     severity: int = Field(
         ge=1, le=5,
         description="Severity rating"
     )
-    repairability: ComponentCondition = Field(
-        description="Assessment of repairability"
-    )
 
 class TestResult(BaseModel):
     testId: str = Field(
-        description="Unique test identifier"
+        description="Unique test identifier (format: TEST-YYYY-XXX)",
+        example="TEST-2024-001"
     )
     testType: str = Field(
-        description="Type of test performed"
+        description="Type of test performed (e.g., NDT, dimensional, performance)",
+        example="fluorescent_penetrant_inspection"
     )
     parameters: Dict[str, Any] = Field(
-        description="Test parameters"
+        description="Test parameters including equipment settings and environmental conditions",
+        example={
+            "penetrantType": "Type II",
+            "developmentTime": 20,
+            "temperature": 23.5,
+            "humidity": 45
+        }
     )
     results: Dict[str, Any] = Field(
         description="Test results"
@@ -98,20 +116,40 @@ class TestResult(BaseModel):
     personnel: str = Field(
         description="Testing personnel"
     )
+    testResults: List[HttpUrl] = Field(
+        description="Links to test results"
+    )
 
 class QIFDocument(BaseModel):
-    documentId: str = Field(description="QIF document identifier")
-    uri: HttpUrl = Field(description="URI to QIF document location")
+    documentId: str = Field(
+        description="QIF document identifier (format: QIF-YYYY-XXX)",
+        example="QIF-2024-001"
+    )
+    version: int = Field(
+        default=1,
+        description="Version number of the QIF document",
+        ge=1
+    )
+    storage_path: str = Field(
+        description="Storage path for the QIF document (format: qif/{documentId}/v{version}/measurement.qif)",
+        example="qif/QIF-2024-001/v1/measurement.qif"
+    )
+    uri: HttpUrl = Field(
+        description="URI to QIF document location (HTTPS URL)",
+        example="https://nmis.scot/qif/QIF-2024-001/v1/measurement.qif"
+    )
     hash: str = Field(description="SHA-256 hash of QIF document")
     timestamp: datetime = Field(description="Document creation/update timestamp")
 
     
 class RepairHistory(BaseModel):
     repairId: str = Field(
-        description="Reference to previous repair"
+        description="Reference to previous repair (format: REP-YYYY-XXX)",
+        example="REP-2023-001"
     )
     repairDate: datetime = Field(
-        description="Date of repair"
+        description="Date and time when repair was completed (ISO format)",
+        example="2023-06-15T10:00:00"
     )
     repairType: RepairType = Field(
         description="Type of repair performed"
@@ -197,11 +235,15 @@ class RepairModel(BaseModel):
         }
     )
 
-    repairId: str = Field(
-        description="Unique repair identifier"
+    repairId: Optional[str] = Field(
+        default=None,
+        description="Unique repair identifier (format: REP-YYYY-XXX)",
+        example="REP-2024-001"
     )
-    currentCondition: ComponentCondition = Field(
-        description="Current condition assessment"
+    currentCondition: Optional[ComponentCondition] = Field(
+        default=None,
+        description="Current assessed condition of the component",
+        example="repairable"
     )
     defects: Optional[List[DefectInformation]] = Field(
         default=None,
@@ -221,11 +263,28 @@ class RepairModel(BaseModel):
     )
     approvals: Optional[Dict[str, Any]] = Field(
         default=None,
-        description="Required approval signatures"
+        description="Required approval signatures with name, ID, and timestamp",
+        example={
+            "inspector": {
+                "name": "John Smith",
+                "id": "INSP-001",
+                "date": "2024-02-03T10:00:00"
+            },
+            "supervisor": {
+                "name": "Jane Doe",
+                "id": "SUP-001",
+                "date": "2024-02-03T11:00:00"
+            }
+        }
     )
     certification: Optional[Dict[str, Any]] = Field(
         default=None,
-        description="Certification information - url to certification document"
+        description="Certification details including certificate number and documentation",
+        example={
+            "certificateNumber": "CERT-2024-001",
+            "issueDate": "2024-02-03T12:00:00",
+            "documentUrl": "https://nmis.scot/certificates/REP-2024-001.pdf"
+        }
     )
     nextMaintenanceDue: Optional[datetime] = Field(
         default=None,

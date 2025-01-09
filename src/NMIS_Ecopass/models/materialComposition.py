@@ -13,15 +13,6 @@ class MaterialCategory(str, Enum):
     COATING = "coating"
     OTHER = "other"
 
-class MaterialForm(str, Enum):
-    SOLID = "solid"
-    POWDER = "powder"
-    LIQUID = "liquid"
-    SHEET = "sheet"
-    WIRE = "wire"
-    BAR = "bar"
-    TUBE = "tube"
-    COATING = "coating"
 
 class MaterialStandard(str, Enum):
     ASTM = "astm"
@@ -51,30 +42,41 @@ class MaterialCertificationType(str, Enum):
 
 class MaterialProperty(BaseModel):
     propertyName: str = Field(
-        description="Name of the material property"
+        description="Name of the material property",
+        example="tensileStrength"
     )
     value: float = Field(
-        description="Numerical value of the property"
+        description="Numerical value of the property",
+        example=310.0
     )
     unit: str = Field(
-        description="Unit of measurement"
+        description="Unit of measurement",
+        example="MPa"
     )
     testMethod: Optional[str] = Field(
         default=None,
-        description="Test method used to determine property"
+        description="Test method used to determine property",
+        example="ASTM E8"
     )
     testConditions: Optional[Dict[str, Any]] = Field(
         default=None,
-        description="Test conditions under which property was measured"
+        description="Test conditions under which property was measured",
+        example={
+            "temperature": 23,
+            "humidity": 50,
+            "strain_rate": 0.2
+        }
     )
 
 class MaterialComposition(BaseModel):
     element: str = Field(
-        description="Chemical element or compound"
+        description="Chemical element or compound",
+        example="Al"
     )
     unit: str = Field(
         default="weight_percent",
-        description="Percentage weight for composition"
+        description="Percentage weight for composition",
+        example="weight_percent"
     )
 
 class MaterialCertification(BaseModel):
@@ -101,6 +103,9 @@ class MaterialCertification(BaseModel):
 class MaterialTraceability(BaseModel):
     batchNumber: str = Field(
         description="Material batch or heat number"
+    )
+    url: HttpUrl = Field(
+        description="URL to traceability document"
     )
 
 class MaterialSustainability(BaseModel):
@@ -135,7 +140,6 @@ class MaterialInformation(BaseModel):
                         "actual": 52.3
                     }
                 ],
-                "materialForm": "bar",
                 "properties": [
                     {
                         "propertyName": "tensileStrength",
@@ -164,9 +168,6 @@ class MaterialInformation(BaseModel):
     )
     composition: List[MaterialComposition] = Field(
         description="Chemical composition details"
-    )
-    materialForm: MaterialForm = Field(
-        description="Physical form of material"
     )
     properties: List[MaterialProperty] = Field(
         description="Material properties"
@@ -200,57 +201,22 @@ class MaterialInformation(BaseModel):
     )
 
 class ProductMaterial(BaseModel):
-    model_config = ConfigDict(
-        extra='allow',
-        json_schema_extra={
-            "example": {
-                "productId": "PROD-2024-001",
-                "components": {
-                    "housing": {
-                        "materialId": "MAT-2024-001",
-                        "tradeName": "Aluminum 6061-T6",
-                        "materialCategory": "metal",
-                        "materialStandard": "astm",
-                        "standardDesignation": "ASTM B209",
-                        "composition": [
-                            {
-                                "element": "Al",
-                                "unit": "weight_percent",
-                            }
-                        ],
-                        "properties": [
-                            {
-                                "propertyName": "tensileStrength",
-                                "value": 310.0,
-                                "unit": "MPa"
-                            }
-                        ],
-                        "traceability": {
-                            "batchNumber": "BATCH-001"
-                        }
-                    }
-                },
-                "totalMass": 2.5,
-                "materialBreakdown": {
-                    "aluminum": 85.0,
-                    "steel": 15.0
-                },
-                "recycledContentTotal": 30.5,
-                "hazardousMaterials": ["chromium_coating"],
-                "circularityReference": "example.com/circularity-id"
-            }
-        }
+    productId: Optional[str] = Field(
+        default=None,
+        description="Reference to product identifier",
+        example="PROD-2024-001"
     )
-    productId: str = Field(
-        description="Reference to product identifier"
-    )
-    components: Dict[str, MaterialInformation] = Field(
+    components: Optional[Dict[str, MaterialInformation]] = Field(
+        default_factory=dict,
         description="Map of component names to their materials"
     )
-    totalMass: float = Field(
-        description="Total mass of product in kg"
+    totalMass: Optional[float] = Field(
+        default=None,
+        description="Total mass of product in kg",
+        example=2.5
     )
-    materialBreakdown: Dict[str, float] = Field(
+    materialBreakdown: Optional[Dict[str, float]] = Field(
+        default_factory=dict,
         description="Percentage breakdown of materials by mass"
     )
     recycledContentTotal: Optional[float] = Field(

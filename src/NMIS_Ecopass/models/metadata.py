@@ -31,19 +31,23 @@ class Metadata(BaseModel):
     
     backup_reference: Optional[HttpUrl] = Field(
         default=None, 
-        description="Optional reference to a backup version of the DPP within a third party provider."
+        description="Optional reference to a backup version of the DPP within a third party provider",
+        example="https://example.com/backup/dpp-123"
     )
     registration_identifier: Optional[HttpUrl] = Field(
         default=None, 
-        description="URL back to EU Registry."
+        description="URL back to EU Registry or Company DPP",
+        example="https://eu-registry.example.com/dpp/123456"
     )
     economic_operator_id: Optional[str] = Field(
         default=None,
-        description="The identifier for the economic operator, typically a unique company ID, e.g., tax code"
+        description="The identifier for the economic operator, typically a unique company ID, e.g., tax code",
+        example="ECO-987654321"
     )
     last_modification: Optional[datetime] = Field(
         default=None,
-        description="Timestamp of the last modification to the DPP."
+        description="Timestamp of the last modification to the DPP",
+        example="2024-03-20T14:30:00Z"
     )
     predecessor: Optional[str] = Field(
         default=None, 

@@ -10,13 +10,35 @@ from .additionalData import AdditionalData
 from pydantic import ConfigDict
 
 class DigitalProductPassport(BaseModel):
-    metadata: Optional[Metadata] = Field(default_factory=Metadata)
-    productIdentifier: Optional[ProductIdentifier] = Field(default_factory=ProductIdentifier)
-    circularity: Optional[Circularity] = Field(default_factory=Circularity)
-    carbonFootprint: Optional[CarbonFootprint] = Field(default_factory=CarbonFootprint)
-    reManufacture: Optional[RepairModel] = Field(default_factory=RepairModel)
-    productMaterial: Optional[ProductMaterial] = Field(default_factory=ProductMaterial)
-    additionalData: Optional[AdditionalData] = Field(default_factory=AdditionalData)
+    metadata: Metadata = Field(
+        default_factory=Metadata,
+        description="Passport metadata"
+    )
+    productIdentifier: ProductIdentifier = Field(
+        default_factory=ProductIdentifier,
+        description="Product identification"
+    )
+    circularity: Circularity = Field(
+        default_factory=Circularity,
+        description="Circularity information"
+    )
+    carbonFootprint: CarbonFootprint = Field(
+        default_factory=CarbonFootprint,
+        description="Carbon footprint data"
+    )
+    reManufacture: RepairModel = Field(
+        default_factory=RepairModel,
+        description="Remanufacturing data"
+    )
+    productMaterial: ProductMaterial = Field(
+        default_factory=ProductMaterial,
+        description="Material composition"
+    )
+    
+    additionalData: Optional[AdditionalData] = Field(
+        default=None,
+        description="Optional additional custom data"
+    )
 
     model_config = ConfigDict(
         extra='allow',
@@ -221,7 +243,6 @@ class DigitalProductPassport(BaseModel):
                     },
                     "url": "https://example.com/quality-docs",
                     "created_at": "2024-03-20T10:00:00",
-                    "updated_at": "2024-03-20T10:00:00",
                     "created_by": "QA_TEAM",
                     "description": "Quality assessment metrics"
                 }

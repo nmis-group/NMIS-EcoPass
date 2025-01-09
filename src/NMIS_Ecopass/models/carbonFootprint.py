@@ -15,11 +15,13 @@ class LifecycleStage(str, Enum):
 class LifecycleStageCarbonFootprint(BaseModel):
     lifecycleStage: LifecycleStage = Field(
         default=None,
-        description="The stage of the product's lifecycle"
+        description="The stage of the product's lifecycle",
+        example="mainProduction"
     )
     carbonFootprint: float = Field(
         default=None,
-        description="Carbon footprint associated with this lifecycle stage in Kilograms"
+        description="Carbon footprint associated with this lifecycle stage in Kilograms",
+        example=20.5
     )
 
 
