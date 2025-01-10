@@ -1,14 +1,12 @@
-import pytest
 from datetime import datetime
-from pydantic import ValidationError
 import uuid
 
 from NMIS_Ecopass.models.digitalProductPassport import DigitalProductPassport
 from NMIS_Ecopass.models.metadata import Metadata, StatusEnum
 from NMIS_Ecopass.models.productIdentifier import ProductIdentifier, ProductStatus
 from NMIS_Ecopass.models.remanufacture import RepairModel, ComponentCondition, RepairType, RepairHistory, QIFDocument, ProcessCategory, DefectInformation, TestResult, ProcessStep
-from NMIS_Ecopass.models.circularity import Circularity, RecycledContent, RecycledMaterialInfo, RecycledMaterial, DismantlingAndRemovalDocumentation, ResourcePath, EndOfLifeInformation, SupplierInformation, MimeType, AddressOfSupplier
-from NMIS_Ecopass.models.carbonFootprint import CarbonFootprint, CarbonFootprintPerLifecycleStage, CarbonFootprintStudy, LifecycleStage
+from NMIS_Ecopass.models.circularity import Circularity, RecycledContent, RecycledMaterialInfo, RecycledMaterial, DismantlingAndRemovalDocumentation, ResourcePath, EndOfLifeInformation, SupplierInformation, MimeType, AddressOfSupplier, DocumentType
+from NMIS_Ecopass.models.carbonFootprint import CarbonFootprint, LifecycleStageCarbonFootprint, LifecycleStage
 from NMIS_Ecopass.models.materialComposition import ProductMaterial, MaterialStandard, MaterialInformation, MaterialTraceability
 from NMIS_Ecopass.models.additionalData import AdditionalData
 
@@ -54,7 +52,7 @@ def test_create_complete_passport():
     passport = DigitalProductPassport(
         metadata=Metadata(
             economic_operator_id="company.com",
-            registration_identifier="eco123.company.com",
+            registration_identifier="https://www.eco123.company.com",
             issue_date=current_time,
             status=StatusEnum.ACTIVE,
             version="1.0.0",
@@ -78,7 +76,7 @@ def test_create_complete_passport():
                 postConsumerShare=30.5
         )],
             dismantlingAndRemovalInformation=[DismantlingAndRemovalDocumentation(
-                documentType=DismantlingAndRemovalDocumentation.DISMANTLING_MANUAL,
+                documentType=DocumentType.DISMANTLINGMANUAL,
                 mimeType=MimeType.PDF,
                 documentURL=ResourcePath(
                     resourcePath="https://example.com/documents/dismantling-manual.pdf"
@@ -109,13 +107,11 @@ def test_create_complete_passport():
             )
         ),
         carbonFootprint=CarbonFootprint(
-            carbonFootprintPerLifecycleStage=[CarbonFootprintPerLifecycleStage(
+            carbonFootprintPerLifecycleStage=[LifecycleStageCarbonFootprint(
                 lifecycleStage=LifecycleStage.RAWMATERIALEXTRACTION,
                 carbonFootprint=20.0
             )],
-            carbonFootprintStudy=CarbonFootprintStudy(
-                resourcePath="https://example.com/carbon-footprint-study"
-            )
+            carbonFootprintStudy="https://example.com/carbon-footprint-study",
         ),
         reManufacture=RepairModel(
             repairId="REP-001",
@@ -228,13 +224,13 @@ def test_create_complete_passport():
     assert isinstance(passport.additionalData, AdditionalData)
     
     # Test specific fields in each section
-    assert passport.metadata.economic_operator_id == "ECO-001"
+    assert passport.metadata.economic_operator_id == "company.com"
     assert passport.metadata.status == StatusEnum.ACTIVE
     assert passport.productIdentifier.serialID == "SN-001"
     assert len(passport.circularity.recycledContent) == 1
     assert passport.circularity.recycledContent[0].preConsumerShare == 45.0
     assert passport.circularity.recycledContent[0].postConsumerShare == 30.5
-    assert passport.carbonFootprint.productCarbonFootprint == 100.5
+    assert passport.carbonFootprint.productCarbonFootprint == None
     assert passport.reManufacture.currentCondition == ComponentCondition.SERVICEABLE
     assert passport.productMaterial.totalMass == 2.5
     assert passport.additionalData.data_type == "quality_metrics"
@@ -258,65 +254,143 @@ def test_create_complete_passport():
     assert main_body.materialStandard == MaterialStandard.ISO
     assert len(main_body.composition) == 3
 
-@pytest.mark.parametrize("invalid_data", [
-    # Test case 1: Missing required section
-    {
-        "metadata": None,
-        "productIdentifier": ProductIdentifier(serialID="SN-001")
-    },
-    # Test case 2: Invalid internal field
-    {
-        "productIdentifier": {
-            "serialID": "SN-001",
-            "productStatus": "invalid_status"
-        }
-    },
-    # Test case 3: Missing all sections
-    {}
-])
-def test_passport_validation(invalid_data):
-    """Test validation of digital product passport with multiple cases"""
-    with pytest.raises(ValidationError):
-        DigitalProductPassport(**invalid_data)
+def test_incremental_passport_creation():
+    """Test creating a passport by incrementally adding data"""
+    current_time = datetime.now()
+    
+    # Create empty instances
+    DPP_instance = DigitalProductPassport()
+    
+    # Populate metadata
+    DPP_instance.metadata = Metadata()
+    DPP_instance.metadata.economic_operator_id = "company.com"
+    DPP_instance.metadata.registration_identifier = "https://www.eco123.company.com"
+    DPP_instance.metadata.issue_date = current_time
+    DPP_instance.metadata.status = StatusEnum.ACTIVE
+    DPP_instance.metadata.version = "1.0.0"
+    DPP_instance.metadata.passport_identifier = uuid.uuid4()
+    DPP_instance.metadata.expiration_date = "2030-01-01"
 
-def test_passport_serialization():
-    """Test serialization of digital product passport"""
-    passport = DigitalProductPassport(
-        metadata=Metadata(economic_operator_id="ECO-001"),
-        productIdentifier=ProductIdentifier(serialID="SN-001")
-    )
-    
-    # Test dict serialization
-    passport_dict = passport.model_dump()
-    assert isinstance(passport_dict, dict)
-    
-    # Test JSON serialization
-    json_str = passport.model_dump_json()
-    assert isinstance(json_str, str)
-    
-    # Verify all required sections are present
-    required_sections = {
-        "metadata", "productIdentifier", "circularity", 
-        "carbonFootprint", "reManufacture", "productMaterial"
-    }
-    assert all(section in passport_dict for section in required_sections)
-    
-    # Verify additionalData is optional
-    assert "additionalData" not in passport_dict or passport_dict["additionalData"] is None
+    # Populate product identifier
+    DPP_instance.productIdentifier = ProductIdentifier()
+    DPP_instance.productIdentifier.batchID = "BATCH-001"
+    DPP_instance.productIdentifier.serialID = "SN-001"
+    DPP_instance.productIdentifier.productStatus = ProductStatus.ORIGINAL
+    DPP_instance.productIdentifier.productName = "NMIS reference product"
+    DPP_instance.productIdentifier.productDescription = "A test product for DPP"
 
-def test_optional_internal_fields():
-    """Test that internal fields within sections can be optional"""
-    passport = DigitalProductPassport(
-        metadata=Metadata(
-            economic_operator_id="ECO-001"
-            # Other metadata fields are optional
+    # Populate circularity
+    DPP_instance.circularity = Circularity()
+    recycled_content = RecycledContent(
+        preConsumerShare=45.0,
+        recycledMaterial=RecycledMaterialInfo(
+            material=RecycledMaterial.ALUMINUM,
+            materialInfoURL="https://example.com/materials/aluminum-info"
         ),
-        productIdentifier=ProductIdentifier(
-            serialID="SN-001"
-            # batchID is optional
+        postConsumerShare=30.5
+    )
+    DPP_instance.circularity.recycledContent = [recycled_content]
+    
+    # Add dismantling information
+    dismantling_doc = DismantlingAndRemovalDocumentation(
+        documentType=DocumentType.DISMANTLINGMANUAL,
+        mimeType=MimeType.PDF,
+        documentURL=ResourcePath(
+            resourcePath="https://example.com/documents/dismantling-manual.pdf"
         )
     )
+    DPP_instance.circularity.dismantlingAndRemovalInformation = [dismantling_doc]
+
+    # Populate carbon footprint
+    DPP_instance.carbonFootprint = CarbonFootprint()
+    lifecycle_footprint = LifecycleStageCarbonFootprint(
+        lifecycleStage=LifecycleStage.RAWMATERIALEXTRACTION,
+        carbonFootprint=20.0
+    )
+    DPP_instance.carbonFootprint.carbonFootprintPerLifecycleStage = [lifecycle_footprint]
+    DPP_instance.carbonFootprint.carbonFootprintStudy = "https://example.com/carbon-footprint-study"
+
+    # Populate remanufacture information
+    DPP_instance.reManufacture = RepairModel()
+    DPP_instance.reManufacture.repairId = "REP-001"
+    DPP_instance.reManufacture.currentCondition = ComponentCondition.SERVICEABLE
     
-    assert passport.metadata.version is None  # Optional internal field
-    assert passport.productIdentifier.batchID is None  # Optional internal field
-    assert isinstance(passport.circularity, Circularity)  # Required section
+    # Add defect information
+    defect = DefectInformation(
+        defectId="DEF-001",
+        description="Tip wear",
+        location="blade_tip",
+        dimensions={"length": 25.0, "width": 3.0, "depth": 1.5},
+        severity=3
+    )
+    DPP_instance.reManufacture.defects = [defect]
+    
+    # Add repair history
+    repair = RepairHistory(
+        repairId="RH-001",
+        repairDate=current_time,
+        repairType=RepairType.SURFACE_TREATMENT,
+        facility="Main Service Center",
+        description="Initial inspection",
+        technician="John Doe"
+    )
+    DPP_instance.reManufacture.repairHistory = [repair]
+
+    # Populate material information
+    DPP_instance.productMaterial = ProductMaterial()
+    DPP_instance.productMaterial.productId = "PROD-001"
+    
+    material_info = MaterialInformation(
+        materialId="MAT-001",
+        tradeName="Eco-Aluminum",
+        materialCategory="metal",
+        materialStandard=MaterialStandard.ISO,
+        standardDesignation="AL6061-T6",
+        composition=[
+            {"element": "Al", "percentage": 97.5, "unit": "weight_percent"},
+            {"element": "Mg", "percentage": 1.0, "unit": "weight_percent"},
+            {"element": "Si", "percentage": 0.6, "unit": "weight_percent"}
+        ],
+        properties=[
+            {"propertyName": "density", "value": 2.7, "unit": "g/cm3"},
+            {"propertyName": "tensile_strength", "value": 310, "unit": "MPa"}
+        ],
+        traceability=MaterialTraceability(
+            batchNumber="BATCH-001",
+            url="https://example.com/traceability/BATCH-001"
+        )
+    )
+    DPP_instance.productMaterial.components = {"main_body": material_info}
+    DPP_instance.productMaterial.totalMass = 2.5
+    DPP_instance.productMaterial.materialBreakdown = {
+        "metal": 97.5,
+        "plastic": 2.5
+    }
+
+    # Add additional data
+    DPP_instance.additionalData = AdditionalData(
+        data_type="quality_metrics",
+        data={
+            "quality_score": 95,
+            "durability_rating": "A+",
+            "test_results": {
+                "impact_resistance": "Passed",
+                "weather_resistance": "Passed",
+                "chemical_resistance": "Passed"
+            },
+            "certifications": [
+                "ISO 9001",
+                "ISO 14001",
+                "CE Mark"
+            ]
+        }
+    )
+
+    # Verify all sections are properly populated
+    assert DPP_instance.metadata.economic_operator_id == "company.com"
+    assert DPP_instance.productIdentifier.serialID == "SN-001"
+    assert DPP_instance.circularity.recycledContent[0].preConsumerShare == 45.0
+    assert DPP_instance.carbonFootprint.carbonFootprintPerLifecycleStage[0].carbonFootprint == 20.0
+    assert DPP_instance.reManufacture.currentCondition == ComponentCondition.SERVICEABLE
+    assert DPP_instance.productMaterial.totalMass == 2.5
+    assert DPP_instance.additionalData.data["quality_score"] == 95

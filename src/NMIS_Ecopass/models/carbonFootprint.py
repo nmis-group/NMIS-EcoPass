@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, ConfigDict, HttpUrl
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional, List
 from enum import Enum
 
@@ -31,7 +31,7 @@ class CarbonFootprint(BaseModel):
         json_schema_extra={
             "example": {
                 "carbonFootprintPerLifecycleStage":[{
-                    "lifecyleStage":"rawMaterial",
+                    "lifecycleStage":"rawMaterial",
                     "carbonFootprint":20.0
                 }],
                 "carbonFootprintStudy":"https://www.example.com/carbonstudy",
@@ -47,7 +47,7 @@ class CarbonFootprint(BaseModel):
         description="List of carbon footprints associated with each stage of "
                     "the product's lifecycle"
     )
-    carbonFootprintStudy: Optional[HttpUrl] = Field(
+    carbonFootprintStudy: Optional[str] = Field(
         default=None,
         description="URL to the carbon footprint study or related document"
     )

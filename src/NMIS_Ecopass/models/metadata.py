@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, HttpUrl,ConfigDict
+from pydantic import BaseModel, Field, ConfigDict
 from datetime import datetime
 from typing import Optional
 from enum import Enum
@@ -29,12 +29,12 @@ class Metadata(BaseModel):
         }
     )
     
-    backup_reference: Optional[HttpUrl] = Field(
+    backup_reference: Optional[str] = Field(
         default=None, 
         description="Optional reference to a backup version of the DPP within a third party provider",
         example="https://example.com/backup/dpp-123"
     )
-    registration_identifier: Optional[HttpUrl] = Field(
+    registration_identifier: Optional[str] = Field(
         default=None, 
         description="URL back to EU Registry or Company DPP",
         example="https://eu-registry.example.com/dpp/123456"

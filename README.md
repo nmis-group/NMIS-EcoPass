@@ -3,13 +3,13 @@
 
 `NMIS_Ecopass` is a Python package designed for creating and managing data for digital product passports by [National Manufacturing Institute Scotland](https://www.nmis.scot/) which builds upon work by [Battery Passport](https://thebatterypass.eu/) and [Tractus-X](https://eclipse-tractusx.github.io/). It includes data validation and utility functions to streamline the process of handling product-related data.
 
-"Note: This package is under continuous development, with additional models for 'Remanufacture,' 'MaterialComposition,' and 'AdditionalData' being actively defined and added."
+"Note: This package is under continuous development and will appreciate any contributions to the models."
 
 ## Features
 
 - Define a structured DPP model using Pydantic.
-- Validate and manipulate metadata objects easily.
-- Utility functions for common operations such as creating, updating, and validating metadata.
+- Validate and manipulate objects easily.
+- Utility functions for common operations such as creating industrial QR codes based on ISO 61406.
 - Comprehensive models for material composition, remanufacturing, and circularity tracking.
 - Carbon footprint tracking across product lifecycle stages.
 
@@ -47,96 +47,155 @@ This guide will show you how to create a Digital Product Passport (DPP) using th
 
 ### **Creating a Digital Product Passport (DPP)**
 
-#### **Step 1: Import Models**
-
-First, import the necessary classes from `NMIS_Ecopass`:
+You can create a DPP either by providing all data at once or by building it incrementally. Here's how to build it step by step:
 
 ```python
-from NMIS_Ecopass import (
-    DigitalProductPassport as DPP,
-    Metadata,
-    Circularity,
-    ProductIdentifier,
-    CarbonFootprint,
-    RepairModel,
-    MaterialInformation
-)
 from datetime import datetime
-```
+import uuid
+from NMIS_Ecopass.models import *
 
-#### **Step 2: Create an Instance of DPP and Its Components**
+# Create empty DPP instance
+DPP_instance = DigitalProductPassport()
 
-You can start by creating an instance of `DPP` and then initialize its components:
-
-```python
-# Create an empty DPP instance
-DPP_instance = DPP()
-
-# Components are automatically initialized with default factories
-# You can access and modify them directly
-DPP_instance.metadata.economic_operator_id = "www.nmis.scot"
-DPP_instance.metadata.issue_date = datetime.now()
-DPP_instance.metadata.passport_identifier = "123e4567-e89b-12d3-a456-426614174000"
-DPP_instance.metadata.status = "draft"
-
-# Add circularity information
-DPP_instance.circularity.recycledContent = [{
-    "preConsumerShare": {"preConsumerWasteRecycled": 30.0},
-    "recycledMaterial": {
-        "material": "Aluminum",
-        "materialInfoURL": "https://example.com/materials/aluminum"
-    },
-    "postConsumerShare": {"postConsumerWasteRecycled": 20.0}
-}]
-
-# Add product identifier information
-DPP_instance.productIdentifier.batchID = "BCH-20240913-001"
-DPP_instance.productIdentifier.serialID = "SN-AB123456789"
-DPP_instance.productIdentifier.productStatus = "original"
-
-# Add carbon footprint information
-DPP_instance.carbonFootprint.productCarbonFootprint = 100.0
-```
-
-You can now use `DPP_instance` to access and modify data for your Digital Product Passport.
-
-### **Full Example**
-
-Here’s a full example that demonstrates creating and adding data to a `DigitalProductPassport`:
-
-```python
-from NMIS_Ecopass import DigitalProductPassport as DPP, Metadata, Circularity, ProductIdentifier, CarbonFootprint
-from datetime import datetime
-
-# Create an empty DPP instance
-DPP_instance = DPP()
-
-# Create and assign metadata
+# Step 1: Add Metadata
 DPP_instance.metadata = Metadata()
-DPP_instance.metadata.economic_operator_id = "www.nmis.scot"
+DPP_instance.metadata.economic_operator_id = "company.com"
+DPP_instance.metadata.registration_identifier = "https://www.eco123.company.com"
 DPP_instance.metadata.issue_date = datetime.now()
-DPP_instance.metadata.passport_identifier = "123e4567-e89b-12d3-a456-426614174000"
-DPP_instance.metadata.status = "draft"
+DPP_instance.metadata.status = StatusEnum.ACTIVE
+DPP_instance.metadata.version = "1.0.0"
+DPP_instance.metadata.passport_identifier = uuid.uuid4()
 
-# Create and assign circularity
-DPP_instance.circularity = Circularity()
-DPP_instance.circularity.renewable_content = 25.0
-# Additional circularity fields...
-
-# Create and assign product identifier
+# Step 2: Add Product Identification
 DPP_instance.productIdentifier = ProductIdentifier()
-DPP_instance.productIdentifier.batchID = "BCH-20240913-001"
-DPP_instance.productIdentifier.serialID = "SN-AB123456789"
+DPP_instance.productIdentifier.batchID = "BATCH-001"
+DPP_instance.productIdentifier.serialID = "SN-001"
+DPP_instance.productIdentifier.productStatus = ProductStatus.ORIGINAL
+DPP_instance.productIdentifier.productName = "Your Product Name"
 
-# Create and assign carbon footprint
+# Step 3: Add Circularity Information
+DPP_instance.circularity = Circularity()
+recycled_content = RecycledContent(
+    preConsumerShare=45.0,
+    recycledMaterial=RecycledMaterialInfo(
+        material=RecycledMaterial.ALUMINUM,
+        materialInfoURL="https://example.com/materials/aluminum-info"
+    ),
+    postConsumerShare=30.5
+)
+DPP_instance.circularity.recycledContent = [recycled_content]
+
+# Add dismantling documentation
+dismantling_doc = DismantlingAndRemovalDocumentation(
+    documentType=DocumentType.DISMANTLINGMANUAL,
+    mimeType=MimeType.PDF,
+    documentURL=ResourcePath(
+        resourcePath="https://example.com/documents/manual.pdf"
+    )
+)
+DPP_instance.circularity.dismantlingAndRemovalInformation = [dismantling_doc]
+
+# Step 4: Add Carbon Footprint
 DPP_instance.carbonFootprint = CarbonFootprint()
-DPP_instance.carbonFootprint.productCarbonFootprint = 100.0
-# Additional carbon footprint fields...
+lifecycle_footprint = LifecycleStageCarbonFootprint(
+    lifecycleStage=LifecycleStage.RAWMATERIALEXTRACTION,
+    carbonFootprint=20.0
+)
+DPP_instance.carbonFootprint.carbonFootprintPerLifecycleStage = [lifecycle_footprint]
 
-# Access and modify fields
-print(DPP_instance.metadata.economic_operator_id)
-DPP_instance.metadata.version = "2.0.0"
+# Step 5: Add Material Information
+DPP_instance.productMaterial = ProductMaterial()
+DPP_instance.productMaterial.productId = "PROD-001"
+
+material_info = MaterialInformation(
+    materialId="MAT-001",
+    tradeName="Eco-Aluminum",
+    materialCategory="metal",
+    materialStandard=MaterialStandard.ISO,
+    standardDesignation="AL6061-T6",
+    composition=[
+        {"element": "Al", "percentage": 97.5, "unit": "weight_percent"},
+        {"element": "Mg", "percentage": 1.0, "unit": "weight_percent"}
+    ],
+    properties=[
+        {"propertyName": "density", "value": 2.7, "unit": "g/cm3"}
+    ],
+    traceability=MaterialTraceability(
+        batchNumber="BATCH-001",
+        url="https://example.com/traceability/BATCH-001"
+    )
+)
+DPP_instance.productMaterial.components = {"main_body": material_info}
+DPP_instance.productMaterial.totalMass = 2.5
+
+# Step 6: Add Remanufacturing Information
+DPP_instance.reManufacture = RepairModel()
+DPP_instance.reManufacture.repairId = "REP-001"
+DPP_instance.reManufacture.currentCondition = ComponentCondition.SERVICEABLE
+
+# Add repair history
+repair = RepairHistory(
+    repairId="RH-001",
+    repairDate=datetime.now(),
+    repairType=RepairType.SURFACE_TREATMENT,
+    facility="Service Center",
+    description="Initial inspection"
+)
+DPP_instance.reManufacture.repairHistory = [repair]
+
+# Step 7: Add Additional Data (Optional)
+DPP_instance.additionalData = AdditionalData(
+    data_type="quality_metrics",
+    data={
+        "quality_score": 95,
+        "certifications": ["ISO 9001", "CE Mark"]
+    }
+)
 ```
+
+### Key Components Overview
+
+Each section of the DPP serves a specific purpose:
+
+1. **Metadata**: Administrative information about the passport itself
+   - Economic operator identification
+   - Issue and expiration dates
+   - Version control
+   - Status tracking
+
+2. **Product Identifier**: Basic product information
+   - Batch and serial numbers
+   - Product status (original, repaired, etc.)
+   - Product name and description
+
+3. **Circularity**: Recycling and end-of-life information
+   - Recycled content percentages
+   - Dismantling instructions
+   - End-of-life handling
+   - Supplier information
+
+4. **Carbon Footprint**: Environmental impact data
+   - Carbon footprint per lifecycle stage
+   - Overall product carbon footprint
+   - Study documentation
+
+5. **Material Information**: Detailed material composition
+   - Material identification
+   - Chemical composition
+   - Physical properties
+   - Traceability information
+
+6. **Remanufacture**: Repair and maintenance tracking
+   - Current condition
+   - Repair history
+   - Defect information
+   - Test results
+
+7. **Additional Data**: Custom extensions
+   - Quality metrics
+   - Certifications
+   - Custom test results
+
 
 ### **Model Details**
 
@@ -195,3 +254,21 @@ If you want to contribute to the `NMIS_Ecopass`, please fork the repository and 
 ## **License**
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+
+### Common Data Mapping Scenarios
+
+1. **Manufacturing Data**
+   - Batch/Serial numbers → `productIdentifier`
+   - Material specs → `productMaterial`
+   - Quality certificates → `additionalData`
+
+2. **Maintenance Records**
+   - Repair history → `reManufacture.repairHistory`
+   - Inspection results → `reManufacture.testResults`
+   - Service schedules → `reManufacture.nextMaintenanceDue`
+
+3. **Sustainability Data**
+   - Carbon footprint → `carbonFootprint`
+   - Recycled content → `circularity.recycledContent`
+   - End-of-life instructions → `circularity.dismantlingAndRemovalInformation`

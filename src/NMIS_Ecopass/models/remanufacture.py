@@ -1,5 +1,5 @@
-from pydantic import BaseModel, Field, HttpUrl, ConfigDict
-from typing import Optional, List, Dict, Union, Any
+from pydantic import BaseModel, Field, ConfigDict
+from typing import Optional, List, Dict, Any
 from enum import Enum
 from datetime import datetime
 
@@ -43,6 +43,7 @@ class ProcessStep(BaseModel):
         example="materialAddition"
     )
     parameters: Optional[Dict[str, Any]] = Field(
+        default=None,
         description="Process-specific parameters and values",
         example={
             "temperature": 200,
@@ -60,7 +61,7 @@ class ProcessStep(BaseModel):
     operators: List[str] = Field(
         description="Qualified operators performing step"
     )
-    documentation: List[HttpUrl] = Field(
+    documentation: List[str] = Field(
         description="Links to process documentation"
     )
 
@@ -95,7 +96,8 @@ class TestResult(BaseModel):
         description="Type of test performed (e.g., NDT, dimensional, performance)",
         example="fluorescent_penetrant_inspection"
     )
-    parameters: Dict[str, Any] = Field(
+    parameters: Optional[Dict[str, Any]] = Field(
+        default=None,
         description="Test parameters including equipment settings and environmental conditions",
         example={
             "penetrantType": "Type II",
@@ -104,19 +106,24 @@ class TestResult(BaseModel):
             "humidity": 45
         }
     )
-    results: Dict[str, Any] = Field(
+    results: Optional[Dict[str, Any]] = Field(
+        default=None,
         description="Test results"
     )
-    conformity: bool = Field(
+    conformity: Optional[bool] = Field(
+        default=None,
         description="Whether results meet specifications"
     )
-    date: datetime = Field(
+    date: Optional[datetime] = Field(
+        default=None,
         description="Test date"
     )
-    personnel: str = Field(
+    personnel: Optional[str] = Field(
+        default=None,
         description="Testing personnel"
     )
-    testResults: List[HttpUrl] = Field(
+    testResults: Optional[List[str]] = Field(
+        default=None,
         description="Links to test results"
     )
 
@@ -134,7 +141,7 @@ class QIFDocument(BaseModel):
         description="Storage path for the QIF document (format: qif/{documentId}/v{version}/measurement.qif)",
         example="qif/QIF-2024-001/v1/measurement.qif"
     )
-    uri: HttpUrl = Field(
+    uri: str = Field(
         description="URI to QIF document location (HTTPS URL)",
         example="https://nmis.scot/qif/QIF-2024-001/v1/measurement.qif"
     )

@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, HttpUrl, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional, List, Dict,Any
 from enum import Enum
 from datetime import datetime
@@ -96,7 +96,7 @@ class MaterialCertification(BaseModel):
         default=None,
         description="Certificate validity period"
     )
-    documentURL: HttpUrl = Field(
+    documentURL: str = Field(
         description="URL to certification document"
     )
 
@@ -104,7 +104,7 @@ class MaterialTraceability(BaseModel):
     batchNumber: str = Field(
         description="Material batch or heat number"
     )
-    url: HttpUrl = Field(
+    url: str = Field(
         description="URL to traceability document"
     )
 
@@ -187,7 +187,7 @@ class MaterialInformation(BaseModel):
         default=None,
         description="Guidelines for material processing"
     )
-    safetyDataSheet: Optional[HttpUrl] = Field(
+    safetyDataSheet: Optional[str] = Field(
         default=None,
         description="Link to material safety data sheet"
     )
@@ -195,7 +195,7 @@ class MaterialInformation(BaseModel):
         default=None,
         description="Additional applicable standards"
     )
-    documentation: Optional[Dict[str, HttpUrl]] = Field(
+    documentation: Optional[Dict[str, str]] = Field(
         default=None,
         description="Additional documentation links"
     )

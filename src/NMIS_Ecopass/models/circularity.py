@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field, HttpUrl, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional, List, Annotated, Union
 from enum import Enum
 
@@ -31,7 +31,7 @@ class MimeType(str, Enum):
 
 
 class ResourcePath(BaseModel):
-    resourcePath: HttpUrl = Field(
+    resourcePath: str = Field(
         default=None,
         description="The resource path to your document or supplier web address. Eg example.com/example.step"
     )
@@ -80,7 +80,7 @@ class RecycledMaterialInfo(BaseModel):
     material: RecycledMaterial = Field(
         default=None,
         description="The type of recycled material used within the product.")
-    materialInfoURL: HttpUrl = Field(
+    materialInfoURL: str = Field(
         default=None,
         description="A URL linking to information about the recycled material, such as material properties, alloy information, etc.")
 
