@@ -177,8 +177,8 @@ class DigitalProductPassport(BaseModel):
                         }
                     ],
                     "approvals": {
-                        "inspector": {"name": "John Smith", "id": "INSP-001", "date": "2024-02-03T10:00:00"},
-                        "supervisor": {"name": "Jane Doe", "id": "SUP-001", "date": "2024-02-03T11:00:00"}
+                        "inspector": { "id": "INSP-001", "date": "2024-02-03T10:00:00"},
+                        "supervisor": { "id": "SUP-001", "date": "2024-02-03T11:00:00"}
                     },
                     "certification": {
                         "certificateNumber": "CERT-2024-001",

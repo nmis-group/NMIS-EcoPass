@@ -237,7 +237,14 @@ class RepairModel(BaseModel):
                         "hash": "a1b2c3d4e5f6...",
                         "timestamp": "2024-02-01T11:00:00"
                     }
-                ]
+                ],
+                "defectManagement": "https://nmis.scot/docs/defect-management-bpmn.pdf",
+                "remanufactureCostModel": "CostModel.xlsx",
+                "remanufactureDESModel": "https://github.com/nmis/remanufacture-des-model",
+                "remanufactureSkills": "https://nmis.scot/docs/skills-matrix.xlsx",
+                "remanufactureEquipment": "https://nmis.scot/docs/equipment-list.docx",
+                "remanufactureCertification": "https://nmis.scot/docs/certification.pdf",
+                "remanufactureRepairId": "REP-2024-001"
             }
         }
     )
@@ -304,4 +311,32 @@ class RepairModel(BaseModel):
     qifDocuments: Optional[List[QIFDocument]] = Field(
         default=[],
         description="List of associated QIF documents"
+    )
+    defectManagement: Optional[str] = Field(
+        default=None,
+        description="Defect management workflow document, e.g., BPMN. URL to documentation."
+    )
+    remanufactureCostModel: Optional[str] = Field(
+        default=None,
+        description="ReManufacturing Cost Model - excel file. Filename or path."
+    )
+    remanufactureDESModel: Optional[str] = Field(
+        default=None,
+        description="High level parameterised opensource remanufacturing DES model. File or URL."
+    )
+    remanufactureSkills: Optional[str] = Field(
+        default=None,
+        description="Skills matrix of workforce needed to remanufacture. File or URL."
+    )
+    remanufactureEquipment: Optional[str] = Field(
+        default=None,
+        description="Required equipment to achieve successful remanufacturing. File or URL."
+    )
+    remanufactureCertification: Optional[str] = Field(
+        default=None,
+        description="Certification or Warranty documents for remanufactured product. File or URL."
+    )
+    remanufactureRepairId: Optional[str] = Field(
+        default=None,
+        description="Repair identifier. E.g., REP-2024-001"
     )
