@@ -1,0 +1,161 @@
+{
+  "generalProductInformation": {
+    "productIdentifier": "BAT-2026-001234",
+    "batteryPassportIdentifier": "urn:battery:nmis001",
+    "batteryCategory": "industrial",
+    "manufacturerInformation": {
+      "contactName": "NMIS Battery Manufacturing Ltd",
+      "postalAddress": {
+        "addressCountry": "United Kingdom",
+        "postalCode": "G1 1XQ",
+        "streetAddress": "99 George Street, Glasgow"
+      },
+      "identifier": "NMIS-MFG-001",
+      "emailAddress": "batteries@nmis.co.uk",
+      "webAddress": "https://www.nmis.co.uk/"
+    },
+    "manufacturingDate": "2026-01-06T10:30:00Z",
+    "batteryStatus": "Original",
+    "batteryMass": 450.5,
+    "manufacturingPlace": {
+      "addressCountry": "United Kingdom",
+      "postalCode": "PA4 8XQ",
+      "streetAddress": "NMIS Campus, Inchinnan"
+    },
+    "operatorInformation": {
+      "contactName": "ReMake Manufacturing Alliance",
+      "postalAddress": {
+        "addressCountry": "United Kingdom",
+        "postalCode": "G1 1XQ",
+        "streetAddress": "University of Strathclyde"
+      },
+      "identifier": "REMAKE-OP-001",
+      "emailAddress": "operator@remake-alliance.org"
+    },
+    "puttingIntoService": "2026-01-15T08:00:00+00:00",
+    "warrentyPeriod": "--08"
+  },
+  "carbonFootprint": {
+    "batteryCarbonFootprint": 85.5,
+    "carbonFootprintPerLifecycleStage": [
+      {
+        "lifecycleStage": "RawMaterialExtraction",
+        "carbonFootprint": 25.0
+      },
+      {
+        "lifecycleStage": "MainProduction",
+        "carbonFootprint": 45.5
+      },
+      {
+        "lifecycleStage": "Distribution",
+        "carbonFootprint": 10.0
+      },
+      {
+        "lifecycleStage": "Recycling",
+        "carbonFootprint": 5.0
+      }
+    ],
+    "carbonFootprintPerformanceClass": "A",
+    "carbonFootprintStudy": "https://nmis.co.uk/dpp/carbon-study-2026.pdf"
+  },
+  "circularity": {
+    "dismantlingAndRemovalInformation": [
+      {
+        "documentType": "DismantlingManual",
+        "mimeType": "application/pdf",
+        "documentURL": "https://nmis.co.uk/docs/dismantling-guide.pdf"
+      }
+    ],
+    "sparePartSources": [
+      {
+        "nameOfSupplier": "NMIS Parts UK",
+        "addressOfSupplier": {
+          "addressCountry": "United Kingdom",
+          "postalCode": "PA4 8XQ",
+          "streetAddress": "NMIS Campus"
+        },
+        "emailAddressOfSupplier": "parts@nmis.co.uk",
+        "supplierWebAddress": "https://parts.nmis.co.uk/",
+        "components": [
+          {
+            "partName": "BMS Module",
+            "partNumber": "BMS-MOD-100"
+          },
+          {
+            "partName": "LFP Cell Pack",
+            "partNumber": "CELL-LFP-280"
+          }
+        ]
+      }
+    ],
+    "recycledContent": [
+      {
+        "preConsumerShare": 5.0,
+        "recycledMaterial": "Cobalt",
+        "postConsumerShare": 7.0
+      },
+      {
+        "preConsumerShare": 3.0,
+        "recycledMaterial": "Lithium",
+        "postConsumerShare": 5.0
+      }
+    ],
+    "safetyMeasures": {
+      "safetyInstructions": "https://nmis.co.uk/docs/safety-instructions.pdf",
+      "extinguishingAgent": [
+        "D",
+        "C"
+      ]
+    },
+    "endOfLifeInformation": {
+      "wastePrevention": "https://nmis.co.uk/docs/waste-prevention.pdf",
+      "separateCollection": "https://nmis.co.uk/docs/collection-info.pdf",
+      "informationOnCollection": "https://nmis.co.uk/docs/recycling-points.pdf"
+    },
+    "renewableContent": 15.0
+  },
+  "materialComposition": {
+    "batteryChemistry": {
+      "shortName": "LFP",
+      "clearName": "Lithium Iron Phosphate"
+    },
+    "batteryMaterials": [
+      {
+        "batteryMaterialLocation": {
+          "componentName": "Cathode",
+          "componentId": "CAT-001"
+        },
+        "batteryMaterialIdentifier": "12190-79-3",
+        "batteryMaterialName": "Lithium Iron Phosphate",
+        "batteryMaterialMass": 180.0,
+        "isCriticalRawMaterial": true
+      },
+      {
+        "batteryMaterialLocation": {
+          "componentName": "Anode",
+          "componentId": "ANO-001"
+        },
+        "batteryMaterialIdentifier": "7782-42-5",
+        "batteryMaterialName": "Graphite",
+        "batteryMaterialMass": 95.0,
+        "isCriticalRawMaterial": false
+      }
+    ],
+    "hazardousSubstances": [
+      {
+        "hazardousSubstanceClass": "AcuteToxicity",
+        "hazardousSubstanceName": "Lithium Hexafluorophosphate",
+        "hazardousSubstanceConcentration": 2.5,
+        "hazardousSubstanceImpact": [
+          "May cause skin irritation",
+          "Toxic if swallowed"
+        ],
+        "hazardousSubstanceLocation": {
+          "componentName": "Electrolyte Chamber",
+          "componentId": "ELEC-001"
+        },
+        "hazardousSubstanceIdentifier": "21324-40-3"
+      }
+    ]
+  }
+}

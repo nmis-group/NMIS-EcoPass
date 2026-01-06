@@ -1,0 +1,1483 @@
+{
+  "$defs": {
+    "AddressOfSupplier": {
+      "properties": {
+        "addressCountry": {
+          "title": "Addresscountry",
+          "type": "string"
+        },
+        "postalCode": {
+          "title": "Postalcode",
+          "type": "string"
+        },
+        "streetAddress": {
+          "title": "Streetaddress",
+          "type": "string"
+        }
+      },
+      "required": [
+        "addressCountry",
+        "postalCode",
+        "streetAddress"
+      ],
+      "title": "AddressOfSupplier",
+      "type": "object"
+    },
+    "BatteryCategoryEnum": {
+      "enum": [
+        "lmt",
+        "ev",
+        "industrial",
+        "stationary"
+      ],
+      "title": "BatteryCategoryEnum",
+      "type": "string"
+    },
+    "BatteryChemistryEntityList": {
+      "properties": {
+        "shortName": {
+          "title": "Shortname",
+          "type": "string"
+        },
+        "clearName": {
+          "title": "Clearname",
+          "type": "string"
+        }
+      },
+      "required": [
+        "shortName",
+        "clearName"
+      ],
+      "title": "BatteryChemistryEntityList",
+      "type": "object"
+    },
+    "BatteryComponent": {
+      "enum": [
+        "pack",
+        "module",
+        "cell"
+      ],
+      "title": "BatteryComponent",
+      "type": "string"
+    },
+    "BatteryCondition": {
+      "properties": {
+        "energyThroughput": {
+          "title": "Energythroughput",
+          "type": "number"
+        },
+        "capacityThroughput": {
+          "$ref": "#/$defs/CapacityThroughput"
+        },
+        "numberOfFullCycles": {
+          "$ref": "#/$defs/NumberOfFullCycles"
+        },
+        "stateOfCertifiedEnergy": {
+          "$ref": "#/$defs/StateOfCertifiedEnergy"
+        },
+        "capacityFade": {
+          "$ref": "#/$defs/CapacityFade"
+        },
+        "remainingEnergy": {
+          "$ref": "#/$defs/RemainingEnergy"
+        },
+        "remainingCapacity": {
+          "$ref": "#/$defs/RemainingCapacity"
+        },
+        "negativeEvents": {
+          "items": {
+            "$ref": "#/$defs/NegativeEventEntity"
+          },
+          "title": "Negativeevents",
+          "type": "array"
+        },
+        "temperatureInformation": {
+          "$ref": "#/$defs/TemperatureInformation"
+        },
+        "remainingPowerCapability": {
+          "items": {
+            "$ref": "#/$defs/RemainingPowerCapabilityEntity"
+          },
+          "title": "Remainingpowercapability",
+          "type": "array"
+        },
+        "powerFade": {
+          "title": "Powerfade",
+          "type": "number"
+        },
+        "roundTripEfficiencyFade": {
+          "title": "Roundtripefficiencyfade",
+          "type": "number"
+        },
+        "evolutionOfSelfDischarge": {
+          "$ref": "#/$defs/EvolutionOfSelfDischarge"
+        },
+        "currentSelfDischargingRate": {
+          "$ref": "#/$defs/CurrentSelfDischargingRate"
+        },
+        "internalResistanceIncrease": {
+          "items": {
+            "$ref": "#/$defs/InternalResistanceIncreaseEntity"
+          },
+          "title": "Internalresistanceincrease",
+          "type": "array"
+        },
+        "roundTripEfficiencyat50PerCentCycleLife": {
+          "title": "Roundtripefficiencyat50Percentcyclelife",
+          "type": "number"
+        },
+        "remainingRoundTripEnergyEfficiency": {
+          "$ref": "#/$defs/RemainingRoundTripEnergyEfficiency"
+        },
+        "stateOfCharge": {
+          "$ref": "#/$defs/StateOfCharge"
+        }
+      },
+      "required": [
+        "energyThroughput",
+        "capacityThroughput",
+        "numberOfFullCycles",
+        "stateOfCertifiedEnergy",
+        "capacityFade",
+        "remainingEnergy",
+        "remainingCapacity",
+        "negativeEvents",
+        "temperatureInformation",
+        "remainingPowerCapability",
+        "powerFade",
+        "roundTripEfficiencyFade",
+        "evolutionOfSelfDischarge",
+        "currentSelfDischargingRate",
+        "internalResistanceIncrease",
+        "roundTripEfficiencyat50PerCentCycleLife",
+        "remainingRoundTripEnergyEfficiency",
+        "stateOfCharge"
+      ],
+      "title": "BatteryCondition",
+      "type": "object"
+    },
+    "BatteryMaterialEntity": {
+      "properties": {
+        "batteryMaterialLocation": {
+          "$ref": "#/$defs/BatteryMaterialLocation"
+        },
+        "batteryMaterialIdentifier": {
+          "pattern": "^\\d{2,7}-\\d{2}-\\d{1}$",
+          "title": "Batterymaterialidentifier",
+          "type": "string"
+        },
+        "batteryMaterialName": {
+          "title": "Batterymaterialname",
+          "type": "string"
+        },
+        "batteryMaterialMass": {
+          "title": "Batterymaterialmass",
+          "type": "number"
+        },
+        "isCriticalRawMaterial": {
+          "title": "Iscriticalrawmaterial",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "batteryMaterialLocation",
+        "batteryMaterialIdentifier",
+        "batteryMaterialName",
+        "batteryMaterialMass",
+        "isCriticalRawMaterial"
+      ],
+      "title": "BatteryMaterialEntity",
+      "type": "object"
+    },
+    "BatteryMaterialLocation": {
+      "properties": {
+        "componentName": {
+          "title": "Componentname",
+          "type": "string"
+        },
+        "componentId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Componentid"
+        }
+      },
+      "required": [
+        "componentName"
+      ],
+      "title": "BatteryMaterialLocation",
+      "type": "object"
+    },
+    "BatteryStatusEnumeration": {
+      "enum": [
+        "Original",
+        "Repurposed",
+        "Reused",
+        "Remanufactured",
+        "Waste"
+      ],
+      "title": "BatteryStatusEnumeration",
+      "type": "string"
+    },
+    "BatteryTechnicalProperties": {
+      "properties": {
+        "originalPowerCapability": {
+          "items": {
+            "$ref": "#/$defs/PowerCapabilityAtEntity"
+          },
+          "title": "Originalpowercapability",
+          "type": "array"
+        },
+        "ratedMaximumPower": {
+          "title": "Ratedmaximumpower",
+          "type": "number"
+        },
+        "powerCapabilityRatio": {
+          "title": "Powercapabilityratio",
+          "type": "number"
+        },
+        "ratedEnergy": {
+          "title": "Ratedenergy",
+          "type": "number"
+        },
+        "expectedNumberOfCycles": {
+          "maximum": 9.223372036854776e+18,
+          "minimum": -9.223372036854776e+18,
+          "title": "Expectednumberofcycles",
+          "type": "number"
+        },
+        "initialSelfDischarge": {
+          "title": "Initialselfdischarge",
+          "type": "number"
+        },
+        "roundtripEfficiency": {
+          "title": "Roundtripefficiency",
+          "type": "number"
+        },
+        "ratedCapacity": {
+          "title": "Ratedcapacity",
+          "type": "number"
+        },
+        "initialInternalResistance": {
+          "items": {
+            "$ref": "#/$defs/InternalResistanceEntity"
+          },
+          "title": "Initialinternalresistance",
+          "type": "array"
+        },
+        "expectedLifetime": {
+          "maximum": 32767.0,
+          "minimum": -32768.0,
+          "title": "Expectedlifetime",
+          "type": "number"
+        },
+        "cRate": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Crate"
+        },
+        "nominalVoltage": {
+          "title": "Nominalvoltage",
+          "type": "number"
+        },
+        "minimumVoltage": {
+          "title": "Minimumvoltage",
+          "type": "number"
+        },
+        "maximumVoltage": {
+          "title": "Maximumvoltage",
+          "type": "number"
+        },
+        "capacityThresholdForExhaustion": {
+          "title": "Capacitythresholdforexhaustion",
+          "type": "number"
+        },
+        "lifetimeReferenceTest": {
+          "format": "uri",
+          "minLength": 1,
+          "title": "Lifetimereferencetest",
+          "type": "string"
+        },
+        "cRateLifeCycleTest": {
+          "title": "Cratelifecycletest",
+          "type": "number"
+        },
+        "temperatureRangeIdleState": {
+          "maximum": 60.0,
+          "minimum": -20.0,
+          "title": "Temperaturerangeidlestate",
+          "type": "number"
+        }
+      },
+      "required": [
+        "originalPowerCapability",
+        "ratedMaximumPower",
+        "powerCapabilityRatio",
+        "ratedEnergy",
+        "expectedNumberOfCycles",
+        "initialSelfDischarge",
+        "roundtripEfficiency",
+        "ratedCapacity",
+        "initialInternalResistance",
+        "expectedLifetime",
+        "nominalVoltage",
+        "minimumVoltage",
+        "maximumVoltage",
+        "capacityThresholdForExhaustion",
+        "lifetimeReferenceTest",
+        "cRateLifeCycleTest",
+        "temperatureRangeIdleState"
+      ],
+      "title": "BatteryTechnicalProperties",
+      "type": "object"
+    },
+    "CapacityFade": {
+      "properties": {
+        "capacityFadeValue": {
+          "title": "Capacityfadevalue",
+          "type": "number"
+        },
+        "lastUpdate": {
+          "pattern": "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?",
+          "title": "Lastupdate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "capacityFadeValue",
+        "lastUpdate"
+      ],
+      "title": "CapacityFade",
+      "type": "object"
+    },
+    "CapacityThroughput": {
+      "properties": {
+        "capacityThroughputValue": {
+          "title": "Capacitythroughputvalue",
+          "type": "number"
+        },
+        "lastUpdate": {
+          "pattern": "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?",
+          "title": "Lastupdate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "capacityThroughputValue",
+        "lastUpdate"
+      ],
+      "title": "CapacityThroughput",
+      "type": "object"
+    },
+    "CarbonFootprintPerLifecycleStageEntity": {
+      "properties": {
+        "lifecycleStage": {
+          "$ref": "#/$defs/LifecycleStage"
+        },
+        "carbonFootprint": {
+          "title": "Carbonfootprint",
+          "type": "number"
+        }
+      },
+      "required": [
+        "lifecycleStage",
+        "carbonFootprint"
+      ],
+      "title": "CarbonFootprintPerLifecycleStageEntity",
+      "type": "object"
+    },
+    "ComponentEntity": {
+      "properties": {
+        "partName": {
+          "title": "Partname",
+          "type": "string"
+        },
+        "partNumber": {
+          "title": "Partnumber",
+          "type": "string"
+        }
+      },
+      "required": [
+        "partName",
+        "partNumber"
+      ],
+      "title": "ComponentEntity",
+      "type": "object"
+    },
+    "CurrentSelfDischargingRate": {
+      "properties": {
+        "currentSelfDischargingRateEntity": {
+          "title": "Currentselfdischargingrateentity",
+          "type": "number"
+        },
+        "lastUpdate": {
+          "pattern": "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?",
+          "title": "Lastupdate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "currentSelfDischargingRateEntity",
+        "lastUpdate"
+      ],
+      "title": "CurrentSelfDischargingRate",
+      "type": "object"
+    },
+    "DismantlingandRemovalDocumentation": {
+      "properties": {
+        "documentType": {
+          "$ref": "#/$defs/Documenttype"
+        },
+        "mimeType": {
+          "title": "Mimetype",
+          "type": "string"
+        },
+        "documentURL": {
+          "format": "uri",
+          "minLength": 1,
+          "title": "Documenturl",
+          "type": "string"
+        }
+      },
+      "required": [
+        "documentType",
+        "mimeType",
+        "documentURL"
+      ],
+      "title": "DismantlingandRemovalDocumentation",
+      "type": "object"
+    },
+    "Documenttype": {
+      "enum": [
+        "BillOfMaterial",
+        "Model3D",
+        "DismantlingManual",
+        "RemovalManual",
+        "OtherManual",
+        "Drawing"
+      ],
+      "title": "Documenttype",
+      "type": "string"
+    },
+    "EndOfLifeInformation": {
+      "properties": {
+        "wastePrevention": {
+          "format": "uri",
+          "minLength": 1,
+          "title": "Wasteprevention",
+          "type": "string"
+        },
+        "separateCollection": {
+          "format": "uri",
+          "minLength": 1,
+          "title": "Separatecollection",
+          "type": "string"
+        },
+        "informationOnCollection": {
+          "format": "uri",
+          "minLength": 1,
+          "title": "Informationoncollection",
+          "type": "string"
+        }
+      },
+      "required": [
+        "wastePrevention",
+        "separateCollection",
+        "informationOnCollection"
+      ],
+      "title": "EndOfLifeInformation",
+      "type": "object"
+    },
+    "EvolutionOfSelfDischarge": {
+      "properties": {
+        "evolutionOfSelfDischargeEntityValue": {
+          "title": "Evolutionofselfdischargeentityvalue",
+          "type": "number"
+        }
+      },
+      "required": [
+        "evolutionOfSelfDischargeEntityValue"
+      ],
+      "title": "EvolutionOfSelfDischarge",
+      "type": "object"
+    },
+    "HazardousSubstanceClassChrateristicEnum": {
+      "enum": [
+        "AcuteToxicity",
+        "SkinCorrosionOrIrritation",
+        "EyeDamageOrIrritation"
+      ],
+      "title": "HazardousSubstanceClassChrateristicEnum",
+      "type": "string"
+    },
+    "HazardousSubstanceEntity": {
+      "properties": {
+        "hazardousSubstanceClass": {
+          "$ref": "#/$defs/HazardousSubstanceClassChrateristicEnum"
+        },
+        "hazardousSubstanceName": {
+          "title": "Hazardoussubstancename",
+          "type": "string"
+        },
+        "hazardousSubstanceConcentration": {
+          "title": "Hazardoussubstanceconcentration",
+          "type": "number"
+        },
+        "hazardousSubstanceImpact": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Hazardoussubstanceimpact",
+          "type": "array"
+        },
+        "hazardousSubstanceLocation": {
+          "$ref": "#/$defs/HubstanceSubstanceLocationEntity"
+        },
+        "hazardousSubstanceIdentifier": {
+          "pattern": "^\\d{2,7}-\\d{2}-\\d{1}$",
+          "title": "Hazardoussubstanceidentifier",
+          "type": "string"
+        }
+      },
+      "required": [
+        "hazardousSubstanceClass",
+        "hazardousSubstanceName",
+        "hazardousSubstanceConcentration",
+        "hazardousSubstanceImpact",
+        "hazardousSubstanceLocation",
+        "hazardousSubstanceIdentifier"
+      ],
+      "title": "HazardousSubstanceEntity",
+      "type": "object"
+    },
+    "HubstanceSubstanceLocationEntity": {
+      "properties": {
+        "componentName": {
+          "title": "Componentname",
+          "type": "string"
+        },
+        "componentId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Componentid"
+        }
+      },
+      "required": [
+        "componentName"
+      ],
+      "title": "HubstanceSubstanceLocationEntity",
+      "type": "object"
+    },
+    "InternalResistanceEntity": {
+      "properties": {
+        "ohmicResistance": {
+          "title": "Ohmicresistance",
+          "type": "number"
+        },
+        "batteryComponent": {
+          "$ref": "#/$defs/BatteryComponent"
+        }
+      },
+      "required": [
+        "ohmicResistance",
+        "batteryComponent"
+      ],
+      "title": "InternalResistanceEntity",
+      "type": "object"
+    },
+    "InternalResistanceIncreaseEntity": {
+      "properties": {
+        "internalResistanceIncreaseValue": {
+          "title": "Internalresistanceincreasevalue",
+          "type": "number"
+        },
+        "lastUpdate": {
+          "pattern": "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?",
+          "title": "Lastupdate",
+          "type": "string"
+        },
+        "batteryComponent": {
+          "$ref": "#/$defs/BatteryComponent"
+        }
+      },
+      "required": [
+        "internalResistanceIncreaseValue",
+        "lastUpdate",
+        "batteryComponent"
+      ],
+      "title": "InternalResistanceIncreaseEntity",
+      "type": "object"
+    },
+    "LabelingEntity": {
+      "properties": {
+        "labelingSymbol": {
+          "format": "uri",
+          "minLength": 1,
+          "title": "Labelingsymbol",
+          "type": "string"
+        },
+        "labelingMeaning": {
+          "$ref": "#/$defs/MultiLanguageText"
+        },
+        "labelingSubject": {
+          "$ref": "#/$defs/LabelingSubject"
+        }
+      },
+      "required": [
+        "labelingSymbol",
+        "labelingMeaning",
+        "labelingSubject"
+      ],
+      "title": "LabelingEntity",
+      "type": "object"
+    },
+    "LabelingSubject": {
+      "enum": [
+        "SeparateCollection",
+        "HazardousMaterial",
+        "CarbonFootPrint",
+        "ExtinguishingAgent"
+      ],
+      "title": "LabelingSubject",
+      "type": "string"
+    },
+    "LifecycleStage": {
+      "enum": [
+        "RawMaterialExtraction",
+        "MainProduction",
+        "Distribution",
+        "Recycling"
+      ],
+      "title": "LifecycleStage",
+      "type": "string"
+    },
+    "ManufacturerInformation": {
+      "properties": {
+        "contactName": {
+          "title": "Contactname",
+          "type": "string"
+        },
+        "postalAddress": {
+          "$ref": "#/$defs/PostalAddress"
+        },
+        "identifier": {
+          "title": "Identifier",
+          "type": "string"
+        },
+        "emailAddress": {
+          "anyOf": [
+            {
+              "pattern": "^[\\w.-]+@[\\w.-]+\\.[A-Za-z]{2,}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Emailaddress"
+        },
+        "webAddress": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Webaddress"
+        }
+      },
+      "required": [
+        "contactName",
+        "postalAddress",
+        "identifier"
+      ],
+      "title": "ManufacturerInformation",
+      "type": "object"
+    },
+    "ManufacturingPlace": {
+      "properties": {
+        "addressCountry": {
+          "title": "Addresscountry",
+          "type": "string"
+        },
+        "postalCode": {
+          "title": "Postalcode",
+          "type": "string"
+        },
+        "streetAddress": {
+          "title": "Streetaddress",
+          "type": "string"
+        }
+      },
+      "required": [
+        "addressCountry",
+        "postalCode",
+        "streetAddress"
+      ],
+      "title": "ManufacturingPlace",
+      "type": "object"
+    },
+    "MultiLanguageText": {
+      "properties": {},
+      "title": "MultiLanguageText",
+      "type": "object"
+    },
+    "NMIS_Ecopass__models__BatteryPass__carbon_footprint__Model": {
+      "properties": {
+        "batteryCarbonFootprint": {
+          "title": "Batterycarbonfootprint",
+          "type": "number"
+        },
+        "carbonFootprintPerLifecycleStage": {
+          "items": {
+            "$ref": "#/$defs/CarbonFootprintPerLifecycleStageEntity"
+          },
+          "title": "Carbonfootprintperlifecyclestage",
+          "type": "array"
+        },
+        "carbonFootprintPerformanceClass": {
+          "title": "Carbonfootprintperformanceclass",
+          "type": "string"
+        },
+        "carbonFootprintStudy": {
+          "format": "uri",
+          "minLength": 1,
+          "title": "Carbonfootprintstudy",
+          "type": "string"
+        },
+        "absoluteCarbonFootprint": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Absolutecarbonfootprint"
+        }
+      },
+      "required": [
+        "batteryCarbonFootprint",
+        "carbonFootprintPerLifecycleStage",
+        "carbonFootprintPerformanceClass",
+        "carbonFootprintStudy"
+      ],
+      "title": "Model",
+      "type": "object"
+    },
+    "NMIS_Ecopass__models__BatteryPass__circularity__Model": {
+      "properties": {
+        "dismantlingAndRemovalInformation": {
+          "items": {
+            "$ref": "#/$defs/DismantlingandRemovalDocumentation"
+          },
+          "title": "Dismantlingandremovalinformation",
+          "type": "array"
+        },
+        "sparePartSources": {
+          "items": {
+            "$ref": "#/$defs/SparePartSupplierEntity"
+          },
+          "title": "Sparepartsources",
+          "type": "array"
+        },
+        "recycledContent": {
+          "items": {
+            "$ref": "#/$defs/RecycledContentEntity"
+          },
+          "title": "Recycledcontent",
+          "type": "array"
+        },
+        "safetyMeasures": {
+          "$ref": "#/$defs/SafetyMeasures"
+        },
+        "endOfLifeInformation": {
+          "$ref": "#/$defs/EndOfLifeInformation"
+        },
+        "renewableContent": {
+          "title": "Renewablecontent",
+          "type": "number"
+        }
+      },
+      "required": [
+        "dismantlingAndRemovalInformation",
+        "sparePartSources",
+        "recycledContent",
+        "safetyMeasures",
+        "endOfLifeInformation",
+        "renewableContent"
+      ],
+      "title": "Model",
+      "type": "object"
+    },
+    "NMIS_Ecopass__models__BatteryPass__general_product_information__Model": {
+      "properties": {
+        "productIdentifier": {
+          "title": "Productidentifier",
+          "type": "string"
+        },
+        "batteryPassportIdentifier": {
+          "pattern": "^urn:[a-z0-9]+:[a-z0-9]+$",
+          "title": "Batterypassportidentifier",
+          "type": "string"
+        },
+        "batteryCategory": {
+          "$ref": "#/$defs/BatteryCategoryEnum"
+        },
+        "manufacturerInformation": {
+          "$ref": "#/$defs/ManufacturerInformation"
+        },
+        "manufacturingDate": {
+          "format": "date-time",
+          "title": "Manufacturingdate",
+          "type": "string"
+        },
+        "batteryStatus": {
+          "$ref": "#/$defs/BatteryStatusEnumeration"
+        },
+        "batteryMass": {
+          "title": "Batterymass",
+          "type": "number"
+        },
+        "manufacturingPlace": {
+          "$ref": "#/$defs/ManufacturingPlace"
+        },
+        "operatorInformation": {
+          "$ref": "#/$defs/OperatorInformation"
+        },
+        "puttingIntoService": {
+          "pattern": "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?",
+          "title": "Puttingintoservice",
+          "type": "string"
+        },
+        "warrentyPeriod": {
+          "pattern": "--(0[1-9]|1[0-2])(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?",
+          "title": "Warrentyperiod",
+          "type": "string"
+        }
+      },
+      "required": [
+        "productIdentifier",
+        "batteryPassportIdentifier",
+        "batteryCategory",
+        "manufacturerInformation",
+        "manufacturingDate",
+        "batteryStatus",
+        "batteryMass",
+        "manufacturingPlace",
+        "operatorInformation",
+        "puttingIntoService",
+        "warrentyPeriod"
+      ],
+      "title": "Model",
+      "type": "object"
+    },
+    "NMIS_Ecopass__models__BatteryPass__labeling__Model": {
+      "properties": {
+        "declarationOfConformity": {
+          "format": "uri",
+          "minLength": 1,
+          "title": "Declarationofconformity",
+          "type": "string"
+        },
+        "resultOfTestReport": {
+          "format": "uri",
+          "minLength": 1,
+          "title": "Resultoftestreport",
+          "type": "string"
+        },
+        "labels": {
+          "items": {
+            "$ref": "#/$defs/LabelingEntity"
+          },
+          "title": "Labels",
+          "type": "array"
+        }
+      },
+      "required": [
+        "declarationOfConformity",
+        "resultOfTestReport",
+        "labels"
+      ],
+      "title": "Model",
+      "type": "object"
+    },
+    "NMIS_Ecopass__models__BatteryPass__material_composition__Model": {
+      "properties": {
+        "batteryChemistry": {
+          "$ref": "#/$defs/BatteryChemistryEntityList"
+        },
+        "batteryMaterials": {
+          "items": {
+            "$ref": "#/$defs/BatteryMaterialEntity"
+          },
+          "title": "Batterymaterials",
+          "type": "array"
+        },
+        "hazardousSubstances": {
+          "items": {
+            "$ref": "#/$defs/HazardousSubstanceEntity"
+          },
+          "title": "Hazardoussubstances",
+          "type": "array"
+        }
+      },
+      "required": [
+        "batteryChemistry",
+        "batteryMaterials",
+        "hazardousSubstances"
+      ],
+      "title": "Model",
+      "type": "object"
+    },
+    "NMIS_Ecopass__models__BatteryPass__performance_and_durability__Model": {
+      "properties": {
+        "batteryTechicalProperties": {
+          "$ref": "#/$defs/BatteryTechnicalProperties"
+        },
+        "batteryCondition": {
+          "$ref": "#/$defs/BatteryCondition"
+        }
+      },
+      "required": [
+        "batteryTechicalProperties",
+        "batteryCondition"
+      ],
+      "title": "Model",
+      "type": "object"
+    },
+    "NMIS_Ecopass__models__BatteryPass__supply_chain_due_diligence__Model": {
+      "properties": {
+        "supplyChainDueDiligenceReport": {
+          "format": "uri",
+          "minLength": 1,
+          "title": "Supplychainduediligencereport",
+          "type": "string"
+        },
+        "thirdPartyAussurances": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Thirdpartyaussurances"
+        },
+        "supplyChainIndicies": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Supplychainindicies"
+        }
+      },
+      "required": [
+        "supplyChainDueDiligenceReport"
+      ],
+      "title": "Model",
+      "type": "object"
+    },
+    "NegativeEventEntity": {
+      "properties": {
+        "negativeEvent": {
+          "title": "Negativeevent",
+          "type": "string"
+        },
+        "lastUpdate": {
+          "pattern": "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?",
+          "title": "Lastupdate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "negativeEvent",
+        "lastUpdate"
+      ],
+      "title": "NegativeEventEntity",
+      "type": "object"
+    },
+    "NumberOfFullCycles": {
+      "properties": {
+        "numberOfFullCyclesValue": {
+          "title": "Numberoffullcyclesvalue",
+          "type": "number"
+        },
+        "lastUpdate": {
+          "pattern": "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?",
+          "title": "Lastupdate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "numberOfFullCyclesValue",
+        "lastUpdate"
+      ],
+      "title": "NumberOfFullCycles",
+      "type": "object"
+    },
+    "OperatorInformation": {
+      "properties": {
+        "contactName": {
+          "title": "Contactname",
+          "type": "string"
+        },
+        "postalAddress": {
+          "$ref": "#/$defs/PostalAddress"
+        },
+        "identifier": {
+          "title": "Identifier",
+          "type": "string"
+        },
+        "emailAddress": {
+          "anyOf": [
+            {
+              "pattern": "^[\\w.-]+@[\\w.-]+\\.[A-Za-z]{2,}$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Emailaddress"
+        },
+        "webAddress": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Webaddress"
+        }
+      },
+      "required": [
+        "contactName",
+        "postalAddress",
+        "identifier"
+      ],
+      "title": "OperatorInformation",
+      "type": "object"
+    },
+    "PostalAddress": {
+      "properties": {
+        "addressCountry": {
+          "title": "Addresscountry",
+          "type": "string"
+        },
+        "postalCode": {
+          "title": "Postalcode",
+          "type": "string"
+        },
+        "streetAddress": {
+          "title": "Streetaddress",
+          "type": "string"
+        }
+      },
+      "required": [
+        "addressCountry",
+        "postalCode",
+        "streetAddress"
+      ],
+      "title": "PostalAddress",
+      "type": "object"
+    },
+    "PowerCapabilityAtEntity": {
+      "properties": {
+        "atSoC": {
+          "title": "Atsoc",
+          "type": "number"
+        },
+        "powerCapabilityAt": {
+          "title": "Powercapabilityat",
+          "type": "number"
+        }
+      },
+      "required": [
+        "atSoC",
+        "powerCapabilityAt"
+      ],
+      "title": "PowerCapabilityAtEntity",
+      "type": "object"
+    },
+    "RecycledContentEntity": {
+      "properties": {
+        "preConsumerShare": {
+          "maximum": 100.0,
+          "minimum": 0.0,
+          "title": "Preconsumershare",
+          "type": "number"
+        },
+        "recycledMaterial": {
+          "$ref": "#/$defs/RecycledMaterial"
+        },
+        "postConsumerShare": {
+          "maximum": 100.0,
+          "minimum": 0.0,
+          "title": "Postconsumershare",
+          "type": "number"
+        }
+      },
+      "required": [
+        "preConsumerShare",
+        "recycledMaterial",
+        "postConsumerShare"
+      ],
+      "title": "RecycledContentEntity",
+      "type": "object"
+    },
+    "RecycledMaterial": {
+      "enum": [
+        "Cobalt",
+        "Nickel",
+        "Lithium",
+        "Lead",
+        "Cobalt",
+        "Nickel",
+        "Lithium",
+        "Lead"
+      ],
+      "title": "RecycledMaterial",
+      "type": "string"
+    },
+    "RemainingCapacity": {
+      "properties": {
+        "remainingCapacityValue": {
+          "title": "Remainingcapacityvalue",
+          "type": "number"
+        },
+        "lastUpdate": {
+          "pattern": "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?",
+          "title": "Lastupdate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "remainingCapacityValue",
+        "lastUpdate"
+      ],
+      "title": "RemainingCapacity",
+      "type": "object"
+    },
+    "RemainingEnergy": {
+      "properties": {
+        "remainingEnergyalue": {
+          "title": "Remainingenergyalue",
+          "type": "number"
+        },
+        "lastUpdate": {
+          "pattern": "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?",
+          "title": "Lastupdate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "remainingEnergyalue",
+        "lastUpdate"
+      ],
+      "title": "RemainingEnergy",
+      "type": "object"
+    },
+    "RemainingPowerCapabilityEntity": {
+      "properties": {
+        "remainingPowerCapabilityValue": {
+          "$ref": "#/$defs/RemainingPowerCapabilityValue"
+        },
+        "lastUpdate": {
+          "pattern": "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?",
+          "title": "Lastupdate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "remainingPowerCapabilityValue",
+        "lastUpdate"
+      ],
+      "title": "RemainingPowerCapabilityEntity",
+      "type": "object"
+    },
+    "RemainingPowerCapabilityValue": {
+      "properties": {
+        "atSoC": {
+          "title": "Atsoc",
+          "type": "number"
+        },
+        "powerCapabilityAt": {
+          "title": "Powercapabilityat",
+          "type": "number"
+        },
+        "rPCLastUpdated": {
+          "pattern": "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?",
+          "title": "Rpclastupdated",
+          "type": "string"
+        }
+      },
+      "required": [
+        "atSoC",
+        "powerCapabilityAt",
+        "rPCLastUpdated"
+      ],
+      "title": "RemainingPowerCapabilityValue",
+      "type": "object"
+    },
+    "RemainingRoundTripEnergyEfficiency": {
+      "properties": {
+        "remainingRoundTripEnergyEfficiencyValue": {
+          "title": "Remainingroundtripenergyefficiencyvalue",
+          "type": "number"
+        },
+        "lastUpdate": {
+          "pattern": "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?",
+          "title": "Lastupdate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "remainingRoundTripEnergyEfficiencyValue",
+        "lastUpdate"
+      ],
+      "title": "RemainingRoundTripEnergyEfficiency",
+      "type": "object"
+    },
+    "SafetyMeasures": {
+      "properties": {
+        "safetyInstructions": {
+          "format": "uri",
+          "minLength": 1,
+          "title": "Safetyinstructions",
+          "type": "string"
+        },
+        "extinguishingAgent": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Extinguishingagent",
+          "type": "array"
+        }
+      },
+      "required": [
+        "safetyInstructions",
+        "extinguishingAgent"
+      ],
+      "title": "SafetyMeasures",
+      "type": "object"
+    },
+    "SparePartSupplierEntity": {
+      "properties": {
+        "nameOfSupplier": {
+          "title": "Nameofsupplier",
+          "type": "string"
+        },
+        "addressOfSupplier": {
+          "$ref": "#/$defs/AddressOfSupplier"
+        },
+        "emailAddressOfSupplier": {
+          "pattern": "^[\\w.-]+@[\\w.-]+\\.[A-Za-z]{2,}$",
+          "title": "Emailaddressofsupplier",
+          "type": "string"
+        },
+        "supplierWebAddress": {
+          "format": "uri",
+          "minLength": 1,
+          "title": "Supplierwebaddress",
+          "type": "string"
+        },
+        "components": {
+          "items": {
+            "$ref": "#/$defs/ComponentEntity"
+          },
+          "title": "Components",
+          "type": "array"
+        }
+      },
+      "required": [
+        "nameOfSupplier",
+        "addressOfSupplier",
+        "emailAddressOfSupplier",
+        "supplierWebAddress",
+        "components"
+      ],
+      "title": "SparePartSupplierEntity",
+      "type": "object"
+    },
+    "StateOfCertifiedEnergy": {
+      "properties": {
+        "stateOfCertifiedEnergyValue": {
+          "title": "Stateofcertifiedenergyvalue",
+          "type": "number"
+        },
+        "lastUpdate": {
+          "pattern": "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?",
+          "title": "Lastupdate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "stateOfCertifiedEnergyValue",
+        "lastUpdate"
+      ],
+      "title": "StateOfCertifiedEnergy",
+      "type": "object"
+    },
+    "StateOfCharge": {
+      "properties": {
+        "stateOfChargeValue": {
+          "title": "Stateofchargevalue",
+          "type": "number"
+        },
+        "lastUpdate": {
+          "pattern": "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?",
+          "title": "Lastupdate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "stateOfChargeValue",
+        "lastUpdate"
+      ],
+      "title": "StateOfCharge",
+      "type": "object"
+    },
+    "TemperatureInformation": {
+      "properties": {
+        "timeExtremeHighTemp": {
+          "title": "Timeextremehightemp",
+          "type": "number"
+        },
+        "timeExtremeLowTemp": {
+          "title": "Timeextremelowtemp",
+          "type": "number"
+        },
+        "timeExtremeHighTempCharging": {
+          "title": "Timeextremehightempcharging",
+          "type": "number"
+        },
+        "timeExtremeLowTempCharging": {
+          "title": "Timeextremelowtempcharging",
+          "type": "number"
+        },
+        "lastUpdate": {
+          "pattern": "-?([1-9][0-9]{3,}|0[0-9]{3})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])T(([01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9](\\.[0-9]+)?|(24:00:00(\\.0+)?))(Z|(\\+|-)((0[0-9]|1[0-3]):[0-5][0-9]|14:00))?",
+          "title": "Lastupdate",
+          "type": "string"
+        }
+      },
+      "required": [
+        "timeExtremeHighTemp",
+        "timeExtremeLowTemp",
+        "timeExtremeHighTempCharging",
+        "timeExtremeLowTempCharging",
+        "lastUpdate"
+      ],
+      "title": "TemperatureInformation",
+      "type": "object"
+    }
+  },
+  "additionalProperties": true,
+  "description": "Battery Passport Data Model v1.2.0 per DIN DKE SPEC 99100",
+  "properties": {
+    "generalProductInformation": {
+      "$ref": "#/$defs/NMIS_Ecopass__models__BatteryPass__general_product_information__Model",
+      "description": "General product and manufacturer information including battery ID, status, and warranty"
+    },
+    "carbonFootprint": {
+      "$ref": "#/$defs/NMIS_Ecopass__models__BatteryPass__carbon_footprint__Model",
+      "description": "Carbon footprint data including per-lifecycle-stage breakdown and performance class"
+    },
+    "circularity": {
+      "$ref": "#/$defs/NMIS_Ecopass__models__BatteryPass__circularity__Model",
+      "description": "Circularity information including recycled content, dismantling info, and end-of-life handling"
+    },
+    "materialComposition": {
+      "$ref": "#/$defs/NMIS_Ecopass__models__BatteryPass__material_composition__Model",
+      "description": "Material composition data including battery chemistry, materials, and hazardous substances"
+    },
+    "performanceAndDurability": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/NMIS_Ecopass__models__BatteryPass__performance_and_durability__Model"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Performance and durability metrics including capacity, power, SoH, and negative events"
+    },
+    "labeling": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/NMIS_Ecopass__models__BatteryPass__labeling__Model"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Labels and certification including declaration of conformity and test reports"
+    },
+    "supplyChainDueDiligence": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/NMIS_Ecopass__models__BatteryPass__supply_chain_due_diligence__Model"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Supply chain due diligence report and third-party assurances"
+    }
+  },
+  "required": [
+    "generalProductInformation",
+    "carbonFootprint",
+    "circularity",
+    "materialComposition"
+  ],
+  "title": "Battery Passport",
+  "type": "object"
+}
