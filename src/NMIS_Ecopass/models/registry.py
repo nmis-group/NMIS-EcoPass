@@ -99,6 +99,13 @@ def _auto_register_schemas():
         SchemaRegistry.register('digital_product_passport', DigitalProductPassport)
     except ImportError:
         pass
+    
+    try:
+        from ..models.BatteryPass import BatteryPassport
+        SchemaRegistry.register('battery_passport', BatteryPassport)
+        SchemaRegistry.register('battery_pass', BatteryPassport)
+    except ImportError:
+        pass
 
 
 # Auto-register on import
