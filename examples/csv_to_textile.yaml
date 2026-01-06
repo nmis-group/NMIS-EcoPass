@@ -1,0 +1,50 @@
+# CSV to Textile DPP Mapping
+# Maps CSV product data to Digital Product Passport format
+
+mapping:
+  name: "CSV to Textile DPP"
+  version: "1.0.0"
+  description: "Transform CSV textile data to Digital Product Passport"
+  
+  source:
+    connector: csv
+    
+  target:
+    schema: dpp
+    format: jsonld
+
+rules:
+  # Product Identification
+  - source: "sku"
+    target: "productIdentifier.serialID"
+    required: true
+    
+  - source: "product_name"
+    target: "productIdentifier.productName"
+    required: true
+
+  - source: "manufacturer"
+    target: "metadata.economic_operator_id"
+    required: true
+
+  # Material Information
+  - source: "weight"
+    target: "productMaterial.totalMass"
+    transform:
+      type: float
+
+  - source: "chemistry"
+    target: "productMaterial.materialType"
+    transform:
+      type: lookup
+      table:
+        organic_cotton: "Organic Cotton"
+        recycled_polyester: "Recycled Polyester"
+        hemp: "Hemp Fiber"
+      default: "Unknown Material"
+
+  # Sustainability
+  - source: "carbon_footprint"
+    target: "carbonFootprint.productCarbonFootprint"
+    transform:
+      type: float

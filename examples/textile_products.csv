@@ -1,0 +1,4 @@
+sku,product_name,manufacturer,capacity,voltage,weight,chemistry,carbon_footprint
+TEX-001,Cotton T-Shirt,EcoFashion Ltd,,,0.25,organic_cotton,2.5
+TEX-002,Recycled Polyester Jacket,GreenWear Inc,,,0.8,recycled_polyester,4.2
+TEX-003,Hemp Canvas Bag,NaturalGoods Co,,,0.15,hemp,1.1

@@ -1,0 +1,33 @@
+# Yamale schema for DPP Bridge mapping files
+
+mapping:
+  name: str()
+  version: str(required=False)
+  description: str(required=False)
+  source:
+    connector: enum('isa95', 'csv', 'excel', 'json', 'xml')
+    root: str(required=False)
+  target:
+    schema: str()
+    format: enum('jsonld', 'json', required=False)
+
+rules: list(include('rule'))
+
+---
+rule:
+  source: str()
+  target: str()
+  required: bool(required=False)
+  default: any(required=False)
+  transform: include('transform', required=False)
+
+---
+transform:
+  type: enum('str', 'int', 'float', 'datetime', 'lookup', 'template', 'aggregate')
+  format: str(required=False)
+  input_format: str(required=False)
+  output_format: str(required=False)
+  table: map(required=False)
+  default: any(required=False)
+  template: str(required=False)
+  operation: enum('sum', 'count', 'collect', required=False)

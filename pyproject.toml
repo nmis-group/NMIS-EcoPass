@@ -8,10 +8,16 @@ packages = [{include = "NMIS_Ecopass", from = "src"}]
 license = "MIT"
 
 [tool.poetry.dependencies]
-python = "^3.8"
-pydantic = {version = "^2.0"}
-qrcode = ">=7.4.2"
-Pillow = ">=10.0.0"
+python = "^3.10"
+pydantic = "^2.0"
+pyyaml = ">=6.0"
+lxml = ">=4.9"
+openpyxl = ">=3.1"
+jmespath = ">=1.0"        # JSON querying
+python-dateutil = ">=2.8"  # Better datetime parsing
+pyld = ">=2.0.3"          # JSON-LD processing
+yamale = ">=4.0"          # YAML schema validation
+xmltodict = ">=0.13"      # XML to dict conversion
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.3.0"

@@ -1,0 +1,64 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "dpp": "https://dpp.eu/ns#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "identifier": "schema:identifier",
+    "manufacturer": {
+      "@id": "schema:manufacturer",
+      "@type": "@id"
+    },
+    "productionDate": {
+      "@id": "schema:productionDate",
+      "@type": "xsd:date"
+    },
+    "carbonFootprint": {
+      "@id": "dpp:carbonFootprint",
+      "@type": "xsd:float"
+    },
+    "recycledContent": {
+      "@id": "dpp:recycledContent",
+      "@type": "xsd:float"
+    }
+  },
+  "@graph": [
+    {
+      "productIdentifier": {
+        "serialID": "BAT-2024-00123",
+        "productName": "Lithium NMC 811 Battery Module"
+      },
+      "metadata": {
+        "economic_operator_id": "ACME Battery Corp"
+      },
+      "performance": {
+        "rated_capacity_ah": 100.5,
+        "voltage": 400.0
+      },
+      "productMaterial": {
+        "totalMass": 450.0
+      },
+      "composition": {
+        "cell_chemistry": "Lithium Nickel Manganese Cobalt Oxide (NMC 811)"
+      }
+    },
+    {
+      "productIdentifier": {
+        "serialID": "BAT-2024-00124",
+        "productName": "Lithium Iron Phosphate Battery Module"
+      },
+      "metadata": {
+        "economic_operator_id": "ACME Battery Corp"
+      },
+      "performance": {
+        "rated_capacity_ah": 80.0,
+        "voltage": 320.0
+      },
+      "productMaterial": {
+        "totalMass": 380.0
+      },
+      "composition": {
+        "cell_chemistry": "Lithium Iron Phosphate (LFP)"
+      }
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "dpp": "https://dpp.eu/ns#",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "identifier": "schema:identifier",
+    "manufacturer": {
+      "@id": "schema:manufacturer",
+      "@type": "@id"
+    },
+    "productionDate": {
+      "@id": "schema:productionDate",
+      "@type": "xsd:date"
+    },
+    "carbonFootprint": {
+      "@id": "dpp:carbonFootprint",
+      "@type": "xsd:float"
+    },
+    "recycledContent": {
+      "@id": "dpp:recycledContent",
+      "@type": "xsd:float"
+    }
+  },
+  "@graph": [
+    {
+      "productIdentifier": {
+        "serialID": "TEX-001",
+        "productName": "Cotton T-Shirt"
+      },
+      "metadata": {
+        "economic_operator_id": "EcoFashion Ltd"
+      },
+      "productMaterial": {
+        "totalMass": 0.25,
+        "materialType": "Organic Cotton"
+      },
+      "carbonFootprint": {
+        "productCarbonFootprint": 2.5
+      }
+    },
+    {
+      "productIdentifier": {
+        "serialID": "TEX-002",
+        "productName": "Recycled Polyester Jacket"
+      },
+      "metadata": {
+        "economic_operator_id": "GreenWear Inc"
+      },
+      "productMaterial": {
+        "totalMass": 0.8,
+        "materialType": "Recycled Polyester"
+      },
+      "carbonFootprint": {
+        "productCarbonFootprint": 4.2
+      }
+    },
+    {
+      "productIdentifier": {
+        "serialID": "TEX-003",
+        "productName": "Hemp Canvas Bag"
+      },
+      "metadata": {
+        "economic_operator_id": "NaturalGoods Co"
+      },
+      "productMaterial": {
+        "totalMass": 0.15,
+        "materialType": "Hemp Fiber"
+      },
+      "carbonFootprint": {
+        "productCarbonFootprint": 1.1
+      }
+    }
+  ]
+}

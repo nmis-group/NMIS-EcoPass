@@ -1,0 +1,61 @@
+# ISA-95 to Battery DPP Mapping
+# Maps B2MML production data to Digital Product Passport format
+
+mapping:
+  name: "ISA-95 to Battery DPP"
+  version: "1.0.0"
+  description: "Transform B2MML production data to Battery Passport"
+  
+  source:
+    connector: isa95
+    root: MaterialLot
+    
+  target:
+    schema: dpp
+    format: jsonld
+
+rules:
+  # Product Identification
+  - source: "MaterialLot/ID"
+    target: "productIdentifier.serialID"
+    required: true
+    
+  - source: "MaterialLot/MaterialDefinitionID"
+    target: "productIdentifier.productName"
+    transform:
+      type: lookup
+      table:
+        MAT-NMC811: "Lithium NMC 811 Battery Module"
+        MAT-LFP: "Lithium Iron Phosphate Battery Module"
+        MAT-NCA: "Lithium NCA Battery Module"
+      default: "Battery Module"
+
+  - source: "MaterialLot/Property[@ID='manufacturer']/Value"
+    target: "metadata.economic_operator_id"
+    required: true
+
+  # Performance Data
+  - source: "MaterialLot/Property[@ID='capacity_ah']/Value"
+    target: "performance.rated_capacity_ah"
+    transform:
+      type: float
+
+  - source: "MaterialLot/Property[@ID='voltage']/Value"
+    target: "performance.voltage"
+    transform:
+      type: float
+
+  - source: "MaterialLot/Property[@ID='weight_kg']/Value"
+    target: "productMaterial.totalMass"
+    transform:
+      type: float
+
+  # Chemistry mapping
+  - source: "MaterialLot/MaterialDefinitionID"
+    target: "composition.cell_chemistry"
+    transform:
+      type: lookup
+      table:
+        MAT-NMC811: "Lithium Nickel Manganese Cobalt Oxide (NMC 811)"
+        MAT-LFP: "Lithium Iron Phosphate (LFP)"
+        MAT-NCA: "Lithium Nickel Cobalt Aluminum Oxide (NCA)"
