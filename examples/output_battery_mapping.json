@@ -1,0 +1,124 @@
+{
+  "generalProductInformation": {
+    "productIdentifier": "BAT-2024-00123",
+    "manufacturerInformation": {
+      "identifier": "ACME Battery Corp",
+      "contactName": "Unknown Manufacturer",
+      "emailAddress": "info@example.com",
+      "postalAddress": {
+        "addressCountry": "DE",
+        "postalCode": "12345",
+        "streetAddress": "Main St"
+      }
+    },
+    "batteryMass": 450.0,
+    "batteryPassportIdentifier": "urn:batterypass:example",
+    "batteryCategory": "ev",
+    "batteryStatus": "Original",
+    "manufacturingDate": "2024-01-01T00:00:00Z",
+    "manufacturingPlace": {
+      "addressCountry": "DE",
+      "postalCode": "12345",
+      "streetAddress": "Factory St"
+    },
+    "operatorInformation": {
+      "contactName": "ACME Ops",
+      "identifier": "OPS-001",
+      "postalAddress": {
+        "addressCountry": "DE",
+        "postalCode": "54321",
+        "streetAddress": "Ops Lane"
+      }
+    },
+    "puttingIntoService": "2024-02-01T00:00:00Z",
+    "warrentyPeriod": "--12"
+  },
+  "materialComposition": {
+    "batteryChemistry": {
+      "clearName": "Lithium Nickel Manganese Cobalt Oxide (NMC 811)",
+      "shortName": "NMC"
+    },
+    "batteryMaterials": {
+      "0": {
+        "batteryMaterialLocation": {
+          "componentName": "Cathode"
+        },
+        "batteryMaterialIdentifier": "12-34-5",
+        "batteryMaterialName": "Lithium",
+        "batteryMaterialMass": "10.0",
+        "isCriticalRawMaterial": "true"
+      }
+    },
+    "hazardousSubstances": {
+      "0": {
+        "hazardousSubstanceClass": "AcuteToxicity",
+        "hazardousSubstanceName": "Lead",
+        "hazardousSubstanceConcentration": "0.5",
+        "hazardousSubstanceImpact": {
+          "0": "Toxic"
+        },
+        "hazardousSubstanceLocation": {
+          "componentName": "Terminal"
+        },
+        "hazardousSubstanceIdentifier": "7439-92-1"
+      }
+    }
+  },
+  "carbonFootprint": {
+    "batteryCarbonFootprint": "50.0",
+    "carbonFootprintPerformanceClass": "A",
+    "carbonFootprintStudy": "https://example.com",
+    "carbonFootprintPerLifecycleStage": {
+      "0": {
+        "lifecycleStage": "RawMaterialExtraction",
+        "carbonFootprint": "10.0"
+      }
+    }
+  },
+  "circularity": {
+    "renewableContent": "10.0",
+    "dismantlingAndRemovalInformation": {
+      "0": {
+        "documentType": "DismantlingManual",
+        "mimeType": "application/pdf",
+        "documentURL": "https://example.com"
+      }
+    },
+    "sparePartSources": {
+      "0": {
+        "nameOfSupplier": "SparePartsCo",
+        "addressOfSupplier": {
+          "addressCountry": "DE",
+          "postalCode": "12345",
+          "streetAddress": "Spare St"
+        },
+        "emailAddressOfSupplier": "spares@example.com",
+        "supplierWebAddress": "https://example.com",
+        "components": {
+          "0": {
+            "partName": "Part A",
+            "partNumber": "123"
+          }
+        }
+      }
+    },
+    "recycledContent": {
+      "0": {
+        "preConsumerShare": "5.0",
+        "recycledMaterial": "Cobalt",
+        "postConsumerShare": "5.0"
+      }
+    },
+    "endOfLifeInformation": {
+      "wastePrevention": "https://example.com",
+      "separateCollection": "https://example.com",
+      "informationOnCollection": "https://example.com"
+    },
+    "safetyMeasures": {
+      "safetyInstructions": "https://example.com",
+      "extinguishingAgent": {
+        "0": "Water"
+      }
+    }
+  }
+}

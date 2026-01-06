@@ -59,7 +59,7 @@ class ContactInformationEntity(BaseModel):
     Not demanded by the EU Battery Regulation
     """
     emailAddress: Annotated[
-        str | None, Field(pattern='^[w.-]+@[w.-]+.[A-Za-z]{2,}$')
+        str | None, Field(pattern='^[\\w.-]+@[\\w.-]+\\.[A-Za-z]{2,}$')
     ] = None
     """
     email address
